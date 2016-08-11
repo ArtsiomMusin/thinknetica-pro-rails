@@ -7,4 +7,6 @@ RSpec.describe Question, type: :model do
   it 'validates presence of body' do
     expect(Question.new(title: 'title')).to_not be_valid
   end
+
+  it { should have_many(:answers) }
 end
