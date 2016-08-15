@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
+  let(:question) { create(:question) }
   let(:answer) { create(:answer) }
   describe 'GET #index' do
-    let(:answers) { create_list(:answer, 2) }
-    before { get :index }
+    let(:answers) { create_list(:answer, 2, question: question) }
+    before { get :index, question_id: question }
     it 'gets all answers' do
       expect(assigns(:answers)).to match_array(answers)
     end
@@ -34,16 +35,16 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'valid tests' do
+    context 'check valid conditions' do
       it 'creates a new answer with parameters' do
-        expect { post :create, answer: attributes_for(:answer).merge(question_id: create(:question).id) }.to change(Answer, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer).merge(question_id: question.id) }.to change(Answer, :count).by(1)
       end
       it 'renders show after creating a new answer' do
-        post :create, answer: attributes_for(:answer).merge(question_id: create(:question).id)
+        post :create, answer: attributes_for(:answer).merge(question_id: question.id)
         expect(response).to redirect_to answer_path(assigns(:answer))
       end
     end
-    context 'invalid tests' do
+    context 'check invalid conditions' do
       it 'fails with an incomplete answer' do
         expect { post :create, answer: attributes_for(:invalid_answer) }.to_not change(Answer, :count)
       end
