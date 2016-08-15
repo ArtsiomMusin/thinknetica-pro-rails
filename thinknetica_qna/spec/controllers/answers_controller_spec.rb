@@ -35,12 +35,11 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     context 'valid tests' do
-      let(:question) { create(:question) }
       it 'creates a new answer with parameters' do
-        expect { post :create, answer: attributes_for(:answer) }.to change(Answer, :count).by(1)
+        expect { post :create, answer: attributes_for(:answer).merge(question_id: create(:question).id) }.to change(Answer, :count).by(1)
       end
       it 'renders show after creating a new answer' do
-        post :create, answer: attributes_for(:answer)
+        post :create, answer: attributes_for(:answer).merge(question_id: create(:question).id)
         expect(response).to redirect_to answer_path(assigns(:answer))
       end
     end
