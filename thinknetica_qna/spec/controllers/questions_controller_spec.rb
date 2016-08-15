@@ -35,6 +35,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'POST #create' do
     context 'valid tests' do
+      let(:question_with_answer) { build(:question_with_answer) }
       it 'creates a new question with parameters' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
