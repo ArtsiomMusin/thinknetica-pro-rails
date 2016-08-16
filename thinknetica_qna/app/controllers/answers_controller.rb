@@ -1,11 +1,11 @@
 class AnswersController < ApplicationController
+  before_action :load_question, only: [:index, :show, :create]
   def index
-    question = Question.find(params[:question_id])
-    @answers = question.answers
+    @answers = @question.answers
   end
 
   def show
-    @answer = Answer.find(params[:id])
+    @answer = @question.answers.find(params[:id])
   end
 
   def new
@@ -13,9 +13,9 @@ class AnswersController < ApplicationController
   end
 
   def create
-    @answer = Answer.new(answer_params)
+    @answer = @question.answers.create(answer_params)
     if @answer.save
-      redirect_to @answer
+      redirect_to @question
     else
       render :new
     end
@@ -24,5 +24,9 @@ class AnswersController < ApplicationController
   private
   def answer_params
     params.require(:answer).permit(:body)
+  end
+
+  def load_question
+    @question = Question.find(params[:question_id])
   end
 end

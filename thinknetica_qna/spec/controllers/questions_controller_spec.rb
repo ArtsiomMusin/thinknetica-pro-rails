@@ -41,7 +41,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'renders show after creating a new question' do
         post :create, question: attributes_for(:question)
-        expect(response).to redirect_to question_path(assigns(:question))
+        expect(response).to redirect_to assigns(:question)
       end
     end
     context 'check invalid conditions' do
