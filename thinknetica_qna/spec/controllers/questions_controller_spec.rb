@@ -34,7 +34,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
-    context 'valid tests' do
+    context 'check valid conditions' do
       let(:question_with_answer) { build(:question_with_answer) }
       it 'creates a new question with parameters' do
         expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
@@ -44,7 +44,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to question_path(assigns(:question))
       end
     end
-    context 'invalid tests' do
+    context 'check invalid conditions' do
       it 'fails with an incomplete question' do
         expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
