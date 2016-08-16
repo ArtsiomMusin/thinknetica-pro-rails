@@ -1,3 +1,2 @@
 language: ruby
-before_install:
-  - cd thinknetica_qna
+before_install:  cd thinknetica_qna
