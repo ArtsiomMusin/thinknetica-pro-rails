@@ -14,7 +14,7 @@ class AnswersController < ApplicationController
 
   def create
     @answer = @question.answers.create(answer_params)
-    if @answer.save
+    if @answer.valid?
       redirect_to @question
     else
       render :new

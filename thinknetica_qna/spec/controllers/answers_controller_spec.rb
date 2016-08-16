@@ -40,8 +40,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'check valid conditions' do
       it 'creates a new answer with parameters' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(Answer, :count).by(1)
-        expect(question.answers).to include(assigns[:answer])
+        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
       end
       it 'renders show after creating a new answer' do
         post :create, question_id: question, answer: attributes_for(:answer)
