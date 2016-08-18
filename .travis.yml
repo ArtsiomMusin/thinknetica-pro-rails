@@ -6,4 +6,4 @@ before_install:  cd thinknetica_qna
 addons:
   postgresql: "9.4"
 
-script: rspec
+script: bundle exec rspec
