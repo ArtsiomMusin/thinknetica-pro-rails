@@ -24,6 +24,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
     before { get :new }
     it 'creates a new question' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -34,6 +35,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
     context 'check valid conditions' do
       let(:question_with_answer) { build(:question_with_answer) }
       it 'creates a new question with parameters' do
