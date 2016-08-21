@@ -5,7 +5,6 @@ feature 'User sign in', %q{
   As a user
   I want to be able to sign in
 } do
-
   given(:user) { create(:user) }
 
   scenario 'Registered user tries to sign in' do
@@ -24,5 +23,8 @@ feature 'User sign in', %q{
      expect(page).to have_content 'Invalid Email or password.'
      expect(current_path).to eq new_user_session_path
   end
+
+  scenario 'Authenticated user tries to log out'
+  scenario 'User tries to sign up'
 
 end
