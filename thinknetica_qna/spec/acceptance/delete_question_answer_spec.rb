@@ -9,7 +9,7 @@ feature 'Delete question or answer', %q{
   scenario 'Non-authenticated user cannot delete a question'
   scenario 'Authenticated user deletes a answer belongs to this user'
   scenario 'Non-authenticated user cannot delete a answer'
-  scenario 'Authenticated user deletes a question belongs to another user'
-  scenario 'Authenticated user deletes a answer belongs to another user'
-  scenario 'Authenticated user deletes a question belongs to this user but answers belong to another user'
+  scenario 'Authenticated user cannot delete a question belongs to another user'
+  scenario 'Authenticated user cannot delete a answer belongs to another user'
+  scenario 'Authenticated user cannot delete a question belongs to this user but answers belong to another user'
 end
