@@ -12,7 +12,6 @@ module AcceptanceHelpers
     click_on first_question.title, match: :first
 
     expect(current_path).to eq question_path(first_question)
-    save_and_open_page
     expect(page).to have_content first_question.title
     expect(page).to have_content first_question.body
     expect(page).to have_content(first_question.answers.first.body, count: first_question.answers.count)

@@ -5,11 +5,30 @@ feature 'Delete question or answer', %q{
   As an authenticated user
   I want to be able to delete questions or answers
 } do
-  scenario 'Authenticated user deletes a question belongs to this user'
-  scenario 'Non-authenticated user cannot delete a question'
-  scenario 'Authenticated user deletes a answer belongs to this user'
-  scenario 'Non-authenticated user cannot delete a answer'
+  given(:user) { create(:user) }
+  given(:question) { create(:question) }
+  scenario 'Authenticated user deletes a question belongs to this user' do
+    sign_in(user)
+    visit questions_path
+    click_on 'Remove question'
+
+    expect(page).to have_content 'Question removed successfully'
+  end
+  scenario 'Non-authenticated user cannot delete a question' do
+    visit questions_path
+    expect(page).to_not have_content 'Remove question'
+  end
+  scenario 'Authenticated user deletes an answer belongs to this user' do
+    sign_in(user)
+    visit questions_path
+    click_on 'Remove answer'
+
+    expect(page).to have_content 'Answer removed successfully'
+  end
+  scenario 'Non-authenticated user cannot delete an answer' do
+    visit questions_path
+    expect(page).to_not have_content 'Remove answer'
+  end
   scenario 'Authenticated user cannot delete a question belongs to another user'
-  scenario 'Authenticated user cannot delete a answer belongs to another user'
-  scenario 'Authenticated user cannot delete a question belongs to this user but answers belong to another user'
+  scenario 'Authenticated user cannot delete an answer belongs to another user'
 end
