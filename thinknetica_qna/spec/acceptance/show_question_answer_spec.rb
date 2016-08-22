@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-feature 'Show question', %q{
-  In order to see questions from other users
+feature 'Show question and answers', %q{
+  In order to see questions and answers from other users
   As an authenticated user
-  I want to be able to see one or all questions
+  I want to be able to see one or all questions and child answers
 } do
   given(:user) { create(:user) }
   before :each do

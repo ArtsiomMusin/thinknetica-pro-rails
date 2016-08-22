@@ -1,6 +1,9 @@
 h2= @question.title
 p= text_area_tag @question.title, @question.body, rows: 10, cols: 25
 
+- if user_signed_in?
+  p= link_to 'Add answer', new_question_answer_path(@question)
+
 h3 Answers
 - @question.answers.each do |answer|
   p= text_area_tag 'answer', answer.body, rows: 5, cols: 10
