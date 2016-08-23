@@ -18,8 +18,10 @@ feature 'Create question', %q{
     click_on 'Create'
     expect(page).to have_content 'Your answer created successfully.'
   end
+
   scenario 'Non-authenticated user cannot answer a question' do
-    visit question_path(question)
-    expect(page).to_not have_content 'Add question'
+    visit new_question_path(question)
+
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end
