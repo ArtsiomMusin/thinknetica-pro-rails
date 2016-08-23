@@ -28,6 +28,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'GET #new' do
+    sign_in_user
     before { get :new, question_id: question }
     it 'creates a new answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
@@ -38,6 +39,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'POST #create' do
+    sign_in_user
     context 'check valid conditions' do
       it 'creates a new answer with parameters' do
         expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)

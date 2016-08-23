@@ -3,6 +3,7 @@ p= text_area_tag @question.title, @question.body, rows: 10, cols: 25
 
 - if user_signed_in?
   p= link_to 'Add answer', new_question_answer_path(@question)
+  p= link_to 'Remove question', question_path(@question), method: :delete
 
 h3 Answers
 - @question.answers.each do |answer|

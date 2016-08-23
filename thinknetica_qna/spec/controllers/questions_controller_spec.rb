@@ -57,4 +57,19 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
   end
+
+  describe 'GET #destroy' do
+    sign_in_user
+    context 'check for one question' do
+      it 'removes a question' do
+        question # wtf? no question yet?
+        expect { get :destroy, id: question }.to change(Question, :count).by(-1)
+      end
+      it 'renders index' do
+        get :destroy, id: question
+        expect(response).to redirect_to root_url
+      end
+    end
+    context 'remove answer with questions'
+  end
 end
