@@ -7,7 +7,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'GET #index' do
     let(:question) { create(:question) }
     let(:answers) { create_list(:answer, 2, question: question) }
-    before { get :index, question_id: question }
+    before { get :index, user_id: question.user, question_id: question }
     it 'gets all answers' do
       expect(assigns(:answers)).to match_array(answers)
     end
@@ -18,7 +18,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'GET #show' do
 
-    before { get :show, question_id: question_with_answer, id: answer }
+    before { get :show, user_id: question_with_answer.user, question_id: question_with_answer, id: answer }
     it 'shows one specific answer' do
       expect(assigns(:answer)).to eq answer
     end
@@ -29,7 +29,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'GET #new' do
     sign_in_user
-    before { get :new, question_id: question }
+    before { get :new, user_id: question.user, question_id: question }
     it 'creates a new answer' do
       expect(assigns(:answer)).to be_a_new(Answer)
     end
@@ -42,21 +42,33 @@ RSpec.describe AnswersController, type: :controller do
     sign_in_user
     context 'check valid conditions' do
       it 'creates a new answer with parameters' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
+        expect { post :create, user_id: question.user, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
       end
       it 'renders show after creating a new answer' do
-        post :create, question_id: question, answer: attributes_for(:answer)
+        post :create, user_id: question.user, question_id: question, answer: attributes_for(:answer)
         expect(response).to redirect_to assigns(:question)
       end
     end
     context 'check invalid conditions' do
       it 'fails with an incomplete answer' do
-        expect { post :create, question_id: question, answer: attributes_for(:invalid_answer) }.to_not change(Answer, :count)
+        expect { post :create, user_id: question.user, question_id: question, answer: attributes_for(:invalid_answer) }.to_not change(Answer, :count)
       end
 
       it 'renders new again' do
-        post :create, question_id: question, answer: attributes_for(:invalid_answer)
+        post :create, user_id: question.user, question_id: question, answer: attributes_for(:invalid_answer)
         expect(response).to render_template :new
+      end
+    end
+  end
+  describe 'GET #destroy' do
+    sign_in_user
+    context 'check for one question' do
+      it 'removes an answer' do
+        expect { get :destroy, user_id: question_with_answer.user, question_id: question_with_answer, id: answer }.to change(question_with_answer.answers, :count).by(-1)
+      end
+      it 'renders index' do
+        get :destroy, user_id: question_with_answer.user, question_id: question_with_answer, id: answer
+        expect(response).to redirect_to question_with_answer
       end
     end
   end

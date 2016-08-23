@@ -34,25 +34,26 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  let(:user) { create(:user) }
   describe 'POST #create' do
     sign_in_user
     context 'check valid conditions' do
       let(:question_with_answer) { build(:question_with_answer) }
       it 'creates a new question with parameters' do
-        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { post :create, user_id: user, question: attributes_for(:question) }.to change(Question, :count).by(1)
       end
       it 'renders show after creating a new question' do
-        post :create, question: attributes_for(:question)
+        post :create, user_id: user, question: attributes_for(:question)
         expect(response).to redirect_to assigns(:question)
       end
     end
     context 'check invalid conditions' do
       it 'fails with an incomplete question' do
-        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect { post :create, user_id: user, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
 
       it 'renders new again' do
-        post :create, question: attributes_for(:invalid_question)
+        post :create, user_id: user, question: attributes_for(:invalid_question)
         expect(response).to render_template :new
       end
     end
@@ -63,10 +64,10 @@ RSpec.describe QuestionsController, type: :controller do
     context 'check for one question' do
       it 'removes a question' do
         question # wtf? no question yet?
-        expect { get :destroy, id: question }.to change(Question, :count).by(-1)
+        expect { get :destroy, user_id: user, id: question }.to change(Question, :count).by(-1)
       end
       it 'renders index' do
-        get :destroy, id: question
+        get :destroy, user_id: user, id: question
         expect(response).to redirect_to root_url
       end
     end

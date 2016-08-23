@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
+  before_action :load_user, only: [:create, :destroy]
   before_action :load_question, only: [:show, :destroy]
   def index
     @questions = Question.all
@@ -13,8 +14,8 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = Question.new(question_params)
-    if @question.save
+    @question = @user.questions.create(question_params)
+    if @question.valid?
       redirect_to @question, notice: 'Your question created successfully.'
     else
       render :new
@@ -32,6 +33,10 @@ class QuestionsController < ApplicationController
   end
 
   def load_question
-    @question = Question.find params[:id]
+    @question = Question.find(params[:id])
+  end
+
+  def load_user
+    @user = User.find(params[:user_id])
   end
 end
