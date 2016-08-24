@@ -25,4 +25,14 @@ feature 'Create question', %q{
 
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
+
+  scenario 'Authenticated user creates a question with empty fields' do
+    sign_in(user)
+
+    visit questions_path
+    click_on 'Ask question'
+    click_on 'Create'
+
+    expect(page).to have_content 'Could not create a question.'
+  end
 end

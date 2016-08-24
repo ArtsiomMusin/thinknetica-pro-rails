@@ -54,7 +54,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'renders new again' do
         post :create, user_id: user, question: attributes_for(:invalid_question)
-        expect(response).to render_template :new
+        expect(response).to redirect_to new_question_path
       end
     end
   end
@@ -68,7 +68,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'renders index' do
         get :destroy, user_id: user, id: question
-        expect(response).to redirect_to root_url
+        expect(response).to redirect_to root_path
       end
     end
     context 'remove answer with questions'

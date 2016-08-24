@@ -1,6 +1,5 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_user, only: [:create, :destroy]
   before_action :load_question, only: [:show, :destroy]
   def index
     @questions = Question.all
@@ -14,17 +13,17 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = @user.questions.create(question_params)
+    @question = current_user.questions.create(question_params)
     if @question.valid?
       redirect_to @question, notice: 'Your question created successfully.'
     else
-      render :new
+      redirect_to new_question_path, notice: 'Could not create a question.'
     end
   end
 
   def destroy
     @question.destroy
-    redirect_to root_url, notice: 'Question removed successfully.'
+    redirect_to root_path, notice: 'Question removed successfully.'
   end
 
   private
@@ -36,7 +35,4 @@ class QuestionsController < ApplicationController
     @question = Question.find(params[:id])
   end
 
-  def load_user
-    @user = params[:user_id].blank? ? current_user : User.find(params[:user_id])
-  end
 end
