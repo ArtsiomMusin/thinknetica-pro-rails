@@ -9,7 +9,7 @@ feature 'Delete question or answer', %q{
   given(:question) { create(:question) }
   before { create_list(:answer, 3, question: question) }
   scenario 'Authenticated user deletes a question belongs to this user' do
-    sign_in(user)
+    sign_in(question.user)
     visit question_path(question)
     click_on 'Remove question'
 
@@ -20,7 +20,7 @@ feature 'Delete question or answer', %q{
     expect(page).to_not have_content 'Remove question'
   end
   scenario 'Authenticated user deletes an answer belongs to this user' do
-    sign_in(user)
+    sign_in(question.user)
     visit question_path(question)
     click_on 'Remove answer', match: :first
 

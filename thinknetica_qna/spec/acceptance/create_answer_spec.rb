@@ -1,15 +1,14 @@
 require 'rails_helper'
 
-feature 'Create question', %q{
+feature 'Create answer', %q{
   In order to answer questions from other users
   As an authenticated user
   I want to be able to create answers
 } do
-  given(:user) { create(:user) }
   given(:question) { create(:question) }
 
   scenario 'Authenticated user answers a question' do
-    sign_in(user)
+    sign_in(question.user)
     visit question_path(question)
     click_on 'Add answer'
     expect(current_path).to eq new_question_answer_path(question)

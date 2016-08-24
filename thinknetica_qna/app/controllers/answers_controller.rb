@@ -35,7 +35,7 @@ class AnswersController < ApplicationController
   end
 
   def load_user
-    @user = User.find(params[:user_id])
+    @user = params[:user_id].blank? ? current_user : User.find(params[:user_id])
   end
 
   def load_question
