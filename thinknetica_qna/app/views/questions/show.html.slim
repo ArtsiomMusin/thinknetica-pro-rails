@@ -10,6 +10,6 @@ h3 Answers
 - @question.answers.each do |answer|
   p= text_area_tag 'answer', answer.body, rows: 5, cols: 10
   - if user_signed_in? && current_user.author_of?(answer)
-    p= link_to 'Remove answer', question_answer_path(@question, answer), method: :delete
+    p= link_to 'Remove answer', answer_path(answer), method: :delete
 - if @question.answers.count == 0
   p No answers yet

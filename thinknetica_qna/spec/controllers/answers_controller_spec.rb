@@ -41,11 +41,11 @@ RSpec.describe AnswersController, type: :controller do
     before { sign_in(question_with_answer.user) }
     context 'check for one question' do
       it 'removes an answer' do
-        expect { get :destroy, question_id: question_with_answer, id: answer }.to change(question_with_answer.answers, :count).by(-1)
+        expect { get :destroy, id: question_with_answer.answers.first }.to change(question_with_answer.answers, :count).by(-1)
       end
-      it 'renders index' do
-        get :destroy, question_id: question_with_answer, id: answer
-        expect(response).to redirect_to question_with_answer
+      it 'renders question' do
+        get :destroy, id: question_with_answer.answers.first
+        expect(response).to redirect_to question_path
       end
     end
   end

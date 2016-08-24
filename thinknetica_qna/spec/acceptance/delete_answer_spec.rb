@@ -16,7 +16,7 @@ feature 'Delete answer', %q{
     expect(page).to have_content 'Answer removed successfully.'
   end
   scenario 'Non-authenticated user cannot delete an answer' do
-    visit questions_path(question)
+    visit question_path(question)
     expect(page).to_not have_content 'Remove answer'
   end
   scenario 'Authenticated user cannot delete an answer belongs to another user' do
