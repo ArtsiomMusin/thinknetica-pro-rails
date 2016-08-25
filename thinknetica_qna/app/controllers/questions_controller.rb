@@ -13,17 +13,19 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    @question = current_user.questions.create(question_params)
-    if @question.valid?
+    @question = current_user.questions.new(question_params)
+    if @question.save
       redirect_to @question, notice: 'Your question created successfully.'
     else
-      redirect_to new_question_path, notice: 'Could not create a question.'
+      render :new, notice: 'Could not create a question.'
     end
   end
 
   def destroy
-    @question.destroy
-    redirect_to root_path, notice: 'Question removed successfully.'
+    if current_user.author_of?(@question)
+      @question.destroy
+      redirect_to root_path, notice: 'Question removed successfully.'
+    end
   end
 
   private

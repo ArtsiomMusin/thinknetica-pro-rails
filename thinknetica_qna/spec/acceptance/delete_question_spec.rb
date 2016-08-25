@@ -13,6 +13,8 @@ feature 'Delete question', %q{
     click_on 'Remove question'
 
     expect(page).to have_content 'Question removed successfully.'
+    expect(page).to_not have_content 'MyTitle'
+    expect(page).to_not have_content 'MyBody'
   end
   scenario 'Non-authenticated user cannot delete a question' do
     visit question_path(question)

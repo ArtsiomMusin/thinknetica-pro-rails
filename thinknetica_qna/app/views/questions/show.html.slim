@@ -1,15 +1,18 @@
 h2= @question.title
-p= text_area_tag @question.title, @question.body, rows: 10, cols: 25
+p=  @question.body
 
 - if user_signed_in?
-  p= link_to 'Add answer', new_question_answer_path(@question)
+  = form_for [@question, @answer] do |f|
+   = f.label :body
+   = f.text_field :body
+   = f.submit 'Add answer'
   - if user_signed_in? && current_user.author_of?(@question)
     p= link_to 'Remove question', question_path(@question), method: :delete
 
 h3 Answers
 - @question.answers.each do |answer|
-  p= text_area_tag 'answer', answer.body, rows: 5, cols: 10
+  p= answer.body
   - if user_signed_in? && current_user.author_of?(answer)
     p= link_to 'Remove answer', answer_path(answer), method: :delete
-- if @question.answers.count == 0
+- if @question.answers.empty?
   p No answers yet

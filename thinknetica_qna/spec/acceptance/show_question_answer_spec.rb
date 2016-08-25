@@ -6,24 +6,34 @@ feature 'Show question and answers', %q{
   I want to be able to see one or all questions and child answers
 } do
   given(:user) { create(:user) }
-  before :each do
-    @questions = create_list(:question, 5)
-    @questions.each do |question|
-      create_list(:answer, 3, question: question)
-    end
-  end
-  scenario 'Authenticated user sees all questions' do
+  given(:question) { create(:question) }
+  before { create_list(:answer, 3, question: question) }
+  scenario 'Authenticated user sees a question' do
     sign_in(user)
-    check_question_count
+    visit questions_path
+    expect(page).to have_content 'Question:'
   end
-  scenario 'Non-authenticated user sees all questions' do
-    check_question_count
+  scenario 'Non-authenticated user sees a question' do
+    visit questions_path
+    expect(page).to have_content 'Question:'
   end
   scenario 'Authenticated user sees a question and all answers' do
     sign_in(user)
-    open_and_check_question_with_answers
+    visit questions_path
+    click_on question.title
+
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+    expect(page).to have_content(question.answers.first.body, count: question.answers.count)
   end
   scenario 'Non-authenticated user sees a question and all answers' do
-    open_and_check_question_with_answers
+    visit questions_path
+    click_on question.title
+
+    expect(current_path).to eq question_path(question)
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+    expect(page).to have_content(question.answers.first.body, count: question.answers.count)
   end
 end

@@ -10,10 +10,10 @@ RSpec.describe User, type: :model do
     let(:question) { create(:question) }
     let(:user) { create(:user) }
     it 'has a question' do
-      expect(question.user.author_of?(question)).to be true
+      expect(question.user).to be_author_of(question)
     end
     it 'does not have a question' do
-      expect(user.author_of?(question)).to be false
+      expect(user).to_not be_author_of(question)
     end
   end
 
