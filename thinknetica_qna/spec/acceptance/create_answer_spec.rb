@@ -30,6 +30,7 @@ feature 'Create answer', %q{
     click_on 'Add answer'
     expect(current_path).to eq new_question_answer_path(question)
 
+    fill_in 'Body', with: ''
     click_on 'Create'
     expect(page).to have_content 'Could not create an answer.'
   end

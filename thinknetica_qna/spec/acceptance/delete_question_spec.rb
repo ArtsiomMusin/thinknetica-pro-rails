@@ -7,7 +7,6 @@ feature 'Delete question', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  before { create_list(:answer, 3, question: question) }
   scenario 'Authenticated user deletes a question belongs to this user' do
     sign_in(question.user)
     visit question_path(question)

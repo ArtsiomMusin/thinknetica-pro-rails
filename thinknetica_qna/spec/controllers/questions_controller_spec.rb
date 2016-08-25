@@ -40,20 +40,22 @@ RSpec.describe QuestionsController, type: :controller do
     context 'check valid conditions' do
       let(:question_with_answer) { build(:question_with_answer) }
       it 'creates a new question with parameters' do
-        expect { post :create, user_id: user, question: attributes_for(:question) }.to change(Question, :count).by(1)
+        expect { post :create, question: attributes_for(:question) }.to change(Question, :count).by(1)
+      end
+      before { post :create, question: attributes_for(:question) }
+      it 'creates a new question with the right user' do
+        expect(@user.questions).to include(assigns(:question))
       end
       it 'renders show after creating a new question' do
-        post :create, user_id: user, question: attributes_for(:question)
         expect(response).to redirect_to assigns(:question)
       end
     end
     context 'check invalid conditions' do
       it 'fails with an incomplete question' do
-        expect { post :create, user_id: user, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
+        expect { post :create, question: attributes_for(:invalid_question) }.to_not change(Question, :count)
       end
-
       it 'renders new again' do
-        post :create, user_id: user, question: attributes_for(:invalid_question)
+        post :create, question: attributes_for(:invalid_question)
         expect(response).to redirect_to new_question_path
       end
     end
@@ -64,10 +66,10 @@ RSpec.describe QuestionsController, type: :controller do
     context 'check for one question' do
       it 'removes a question' do
         question # wtf? no question yet?
-        expect { get :destroy, user_id: user, id: question }.to change(Question, :count).by(-1)
+        expect { get :destroy, id: question }.to change(Question, :count).by(-1)
       end
       it 'renders index' do
-        get :destroy, user_id: user, id: question
+        get :destroy, id: question
         expect(response).to redirect_to root_path
       end
     end

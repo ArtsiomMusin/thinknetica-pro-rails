@@ -21,8 +21,11 @@ RSpec.describe AnswersController, type: :controller do
       it 'creates a new answer with parameters' do
         expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
       end
+      before { post :create, question_id: question, answer: attributes_for(:answer) }
+      it 'creates a new answer with the right user' do
+        expect(question.user.answers).to include(assigns(:answer))
+      end
       it 'renders show after creating a new answer' do
-        post :create, question_id: question, answer: attributes_for(:answer)
         expect(response).to redirect_to assigns(:question)
       end
     end
@@ -45,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       it 'renders question' do
         get :destroy, id: question_with_answer.answers.first
-        expect(response).to redirect_to question_path
+        expect(response).to redirect_to question_path(question_with_answer)
       end
     end
   end

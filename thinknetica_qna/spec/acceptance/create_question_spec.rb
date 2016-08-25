@@ -31,6 +31,8 @@ feature 'Create question', %q{
 
     visit questions_path
     click_on 'Ask question'
+    fill_in 'Title', with: ''
+    fill_in 'Body', with: ''
     click_on 'Create'
 
     expect(page).to have_content 'Could not create a question.'

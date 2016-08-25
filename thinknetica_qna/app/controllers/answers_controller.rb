@@ -5,10 +5,6 @@ class AnswersController < ApplicationController
     @answer = Answer.new
   end
 
-  def show
-    @answer = Answer.find(params[:id])
-  end
-
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(user: current_user))
@@ -21,7 +17,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @answer.destroy
-    redirect_to question_path, notice: 'Answer removed successfully.'
+    redirect_to question_path(@answer.question), notice: 'Answer removed successfully.'
   end
 
   private

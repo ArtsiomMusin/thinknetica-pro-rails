@@ -32,9 +32,7 @@ class QuestionsController < ApplicationController
   end
 
   def load_question
-    puts "PARAMS #{params.inspect}"
     @question = Question.find(params[:id])
-    puts "FOOUND: #{@question.inspect}"
   end
 
 end
