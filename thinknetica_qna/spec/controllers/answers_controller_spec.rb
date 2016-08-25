@@ -4,16 +4,6 @@ RSpec.describe AnswersController, type: :controller do
   let(:question_with_answer) { create(:question, answers: [answer]) }
   let(:question) { create(:question) }
   let(:answer) { create(:answer) }
-  describe 'GET #new' do
-    before { sign_in(question.user) }
-    before { get :new, question_id: question }
-    it 'creates a new answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-    it 'renders new' do
-      expect(response).to render_template :new
-    end
-  end
 
   describe 'POST #create' do
     before { sign_in(question.user) }
@@ -23,7 +13,7 @@ RSpec.describe AnswersController, type: :controller do
       end
       before { post :create, question_id: question, answer: attributes_for(:answer) }
       it 'creates a new answer with the right user' do
-        expect(question.user.answers).to include(assigns(:answer))
+        expect(assigns(:answer).user_id).to eq question.user_id
       end
       it 'renders show after creating a new answer' do
         expect(response).to redirect_to assigns(:question)
@@ -36,21 +26,30 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders new again' do
         post :create, question_id: question, answer: attributes_for(:invalid_answer)
-        expect(response).to redirect_to new_question_answer_path(question)
+        expect(response).to render_template 'questions/show'
       end
     end
   end
   describe 'GET #destroy' do
-    before { sign_in(question_with_answer.user) }
+    before do
+      sign_in(question.user)
+      question.answers << create(:answer, question: question, user: question.user)
+    end
     context 'check for one question' do
       it 'removes an answer' do
-        expect { get :destroy, id: question_with_answer.answers.first }.to change(question_with_answer.answers, :count).by(-1)
+        expect { get :destroy, id: question.answers.first }.to change(question.answers, :count).by(-1)
       end
       it 'renders question' do
-        get :destroy, id: question_with_answer.answers.first
-        expect(response).to redirect_to question_path(question_with_answer)
+        get :destroy, id: question.answers.first
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+    context 'remove an answer by another user' do
+      let(:user) { create(:user) }
+      it 'removes an answer from another user' do
+        sign_in(user)
+        expect { get :destroy, id: question_with_answer.answers.first }.to change(question_with_answer.answers, :count).by(0)
       end
     end
   end
-
 end

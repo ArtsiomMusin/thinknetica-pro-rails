@@ -1,9 +1,6 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_answer, only: [:destroy]
-  def new
-    @answer = Answer.new
-  end
 
   def create
     @question = Question.find(params[:question_id])
@@ -11,13 +8,15 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to @question, notice: 'Your answer created successfully.'
     else
-      redirect_to new_question_answer_path(@question), notice: 'Could not create an answer.'
+      render 'questions/show', notice: 'Could not create an answer.'
     end
   end
 
   def destroy
-    @answer.destroy
-    redirect_to question_path(@answer.question), notice: 'Answer removed successfully.'
+    if current_user.author_of?(@answer)
+      @answer.destroy
+      redirect_to question_path(@answer.question), notice: 'Answer removed successfully.'
+    end
   end
 
   private

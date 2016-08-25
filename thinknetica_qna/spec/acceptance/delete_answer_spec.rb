@@ -14,6 +14,7 @@ feature 'Delete answer', %q{
     click_on 'Remove answer', match: :first
 
     expect(page).to have_content 'Answer removed successfully.'
+    expect(page).to_not have_content 'AnswerText'
   end
   scenario 'Non-authenticated user cannot delete an answer' do
     visit question_path(question)
