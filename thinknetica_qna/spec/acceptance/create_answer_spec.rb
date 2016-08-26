@@ -14,7 +14,7 @@ feature 'Create answer', %q{
     click_on 'Add answer'
     expect(current_path).to eq question_path(question)
     expect(page).to have_content 'Your answer created successfully.'
-    expect(page).to have 'Answer Body'
+    expect(page).to have_content 'Answer Body'
   end
 
   scenario 'Non-authenticated user cannot answer a question' do
@@ -28,7 +28,7 @@ feature 'Create answer', %q{
     visit question_path(question)
     fill_in 'Body', with: ''
     click_on 'Add answer'
-    expect(current_path).to eq question_path(question)
+    expect(current_path).to eq question_answers_path(question)
     expect(page).to have_content 'Could not create an answer.'
   end
 end

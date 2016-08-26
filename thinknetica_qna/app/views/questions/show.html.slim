@@ -2,17 +2,18 @@ h2= @question.title
 p=  @question.body
 
 - if user_signed_in?
-  = form_for [@question, @answer] do |f|
+  = form_for [@question, Answer.new] do |f|
    = f.label :body
    = f.text_field :body
    = f.submit 'Add answer'
-  - if user_signed_in? && current_user.author_of?(@question)
-    p= link_to 'Remove question', question_path(@question), method: :delete
+  - if current_user.author_of?(@question)
+    p= link_to 'Remove question', @question, method: :delete
 
 h3 Answers
 - @question.answers.each do |answer|
-  p= answer.body
-  - if user_signed_in? && current_user.author_of?(answer)
-    p= link_to 'Remove answer', answer_path(answer), method: :delete
+  - if answer.valid?
+    p= answer.body
+    - if user_signed_in? && current_user.author_of?(answer)
+      p= link_to 'Remove answer', answer, method: :delete
 - if @question.answers.empty?
   p No answers yet
