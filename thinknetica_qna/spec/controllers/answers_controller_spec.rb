@@ -37,10 +37,10 @@ RSpec.describe AnswersController, type: :controller do
     end
     context 'check for one question' do
       it 'removes an answer' do
-        expect { get :destroy, id: question.answers.first }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, id: question.answers.first }.to change(question.answers, :count).by(-1)
       end
       it 'renders question' do
-        get :destroy, id: question.answers.first
+        delete :destroy, id: question.answers.first
         expect(response).to redirect_to question_path(question)
       end
     end
@@ -48,7 +48,7 @@ RSpec.describe AnswersController, type: :controller do
       let(:user) { create(:user) }
       it 'removes an answer from another user' do
         sign_in(user)
-        expect { get :destroy, id: question_with_answer.answers.first }.to change(question_with_answer.answers, :count).by(0)
+        expect { delete :destroy, id: question_with_answer.answers.first }.to_not change(question_with_answer.answers, :count)
       end
     end
   end
