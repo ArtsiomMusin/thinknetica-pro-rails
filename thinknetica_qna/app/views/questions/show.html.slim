@@ -2,7 +2,7 @@ h2= @question.title
 p=  @question.body
 
 - if user_signed_in?
-  = form_for [@question, Answer.new] do |f|
+  = form_for [@question, @answer] do |f|
    = f.label :body
    = f.text_field :body
    = f.submit 'Add answer'
