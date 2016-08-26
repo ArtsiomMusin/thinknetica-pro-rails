@@ -9,7 +9,7 @@ class AnswersController < ApplicationController
       redirect_to @question, notice: 'Your answer created successfully.'
     else
       flash[:notice] = 'Could not create an answer.'
-      render template: 'questions/show'
+      render 'questions/show'
     end
   end
 
