@@ -17,7 +17,8 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: 'Your question created successfully.'
     else
-      render :new, notice: 'Could not create a question.'
+      flash[:notice] = 'Could not create a question.'
+      render :new
     end
   end
 
