@@ -9,24 +9,24 @@ RSpec.describe AnswersController, type: :controller do
     before { sign_in(question.user) }
     context 'check valid conditions' do
       it 'creates a new answer with parameters' do
-        expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
+        expect { post :create, question_id: question, answer: attributes_for(:answer), format: :js }.to change(question.answers, :count).by(1)
       end
-      before { post :create, question_id: question, answer: attributes_for(:answer) }
+      before { post :create, question_id: question, answer: attributes_for(:answer), format: :js }
       it 'creates a new answer with the right user' do
         expect(assigns(:answer).user_id).to eq question.user_id
       end
-      it 'renders show after creating a new answer' do
-        expect(response).to redirect_to assigns(:question)
+      it 'renders create template after creating a new answer' do
+        expect(response).to render_template 'answers/create'
       end
     end
     context 'check invalid conditions' do
       it 'fails with an incomplete answer' do
-        expect { post :create, question_id: question, answer: attributes_for(:invalid_answer) }.to_not change(Answer, :count)
+        expect { post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js }.to_not change(Answer, :count)
       end
 
-      it 'renders new again' do
-        post :create, question_id: question, answer: attributes_for(:invalid_answer)
-        expect(response).to render_template 'questions/show'
+      it 'renders create template again' do
+        post :create, question_id: question, answer: attributes_for(:invalid_answer), format: :js
+        expect(response).to render_template 'answers/create'
       end
     end
   end
