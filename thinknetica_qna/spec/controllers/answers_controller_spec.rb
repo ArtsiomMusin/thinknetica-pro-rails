@@ -4,46 +4,18 @@ RSpec.describe AnswersController, type: :controller do
   let(:question_with_answer) { create(:question, answers: [answer]) }
   let(:question) { create(:question) }
   let(:answer) { create(:answer) }
-  describe 'GET #index' do
-    let(:question) { create(:question) }
-    let(:answers) { create_list(:answer, 2, question: question) }
-    before { get :index, question_id: question }
-    it 'gets all answers' do
-      expect(assigns(:answers)).to match_array(answers)
-    end
-    it 'renders index' do
-      expect(response).to render_template :index
-    end
-  end
-
-  describe 'GET #show' do
-
-    before { get :show, question_id: question_with_answer, id: answer }
-    it 'shows one specific answer' do
-      expect(assigns(:answer)).to eq answer
-    end
-    it 'renders show' do
-      expect(response).to render_template :show
-    end
-  end
-
-  describe 'GET #new' do
-    before { get :new, question_id: question }
-    it 'creates a new answer' do
-      expect(assigns(:answer)).to be_a_new(Answer)
-    end
-    it 'renders new' do
-      expect(response).to render_template :new
-    end
-  end
 
   describe 'POST #create' do
+    before { sign_in(question.user) }
     context 'check valid conditions' do
       it 'creates a new answer with parameters' do
         expect { post :create, question_id: question, answer: attributes_for(:answer) }.to change(question.answers, :count).by(1)
       end
+      before { post :create, question_id: question, answer: attributes_for(:answer) }
+      it 'creates a new answer with the right user' do
+        expect(assigns(:answer).user_id).to eq question.user_id
+      end
       it 'renders show after creating a new answer' do
-        post :create, question_id: question, answer: attributes_for(:answer)
         expect(response).to redirect_to assigns(:question)
       end
     end
@@ -54,9 +26,30 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'renders new again' do
         post :create, question_id: question, answer: attributes_for(:invalid_answer)
-        expect(response).to render_template :new
+        expect(response).to render_template 'questions/show'
       end
     end
   end
-
+  describe 'GET #destroy' do
+    before do
+      sign_in(question.user)
+      question.answers << create(:answer, question: question, user: question.user)
+    end
+    context 'check for one question' do
+      it 'removes an answer' do
+        expect { delete :destroy, id: question.answers.first }.to change(question.answers, :count).by(-1)
+      end
+      it 'renders question' do
+        delete :destroy, id: question.answers.first
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+    context 'remove an answer by another user' do
+      let(:user) { create(:user) }
+      it 'removes an answer from another user' do
+        sign_in(user)
+        expect { delete :destroy, id: question_with_answer.answers.first }.to_not change(question_with_answer.answers, :count)
+      end
+    end
+  end
 end
