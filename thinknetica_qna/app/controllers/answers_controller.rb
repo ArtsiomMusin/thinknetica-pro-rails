@@ -6,10 +6,9 @@ class AnswersController < ApplicationController
     @question = Question.find(params[:question_id])
     @answer = @question.answers.new(answer_params.merge(user: current_user))
     if @answer.save
-      redirect_to @question, notice: 'Your answer created successfully.'
+      flash[:notice] = 'Your answer created successfully.'
     else
       flash[:notice] = 'Could not create an answer.'
-      render 'questions/show'
     end
   end
 
