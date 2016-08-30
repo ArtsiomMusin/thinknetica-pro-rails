@@ -3,7 +3,9 @@ p=  @question.body
 
 h3 Answers
 .answers
-  = render 'answers'
+  = render @question.answers
+  - if @question.answers.empty?
+    p No answers yet
 
 - if user_signed_in?
   = form_for [@question, @answer], remote: true do |f|
