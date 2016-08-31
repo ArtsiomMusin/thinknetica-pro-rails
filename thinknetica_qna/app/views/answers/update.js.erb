@@ -1,0 +1,10 @@
+$(document).on('turbolinks:load', function() {
+  <% if @answer.errors.present? %>
+    <% @answer.errors.full_messages.each do |message| %>
+      $('.answer-message').html('<%= j message %>')
+    <% end %>
+  <% else %>
+    $('.answer-message').html('<%= j 'Your answer created successfully.' %>')
+    $('.answers').append('<%= j render @answer %>');
+  <% end %>
+});
