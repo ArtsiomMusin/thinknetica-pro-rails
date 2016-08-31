@@ -1,10 +1,14 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :load_answer, only: [:destroy]
+  before_action :load_answer, only: [:update, :destroy]
 
   def create
     @question = Question.find(params[:question_id])
     @answer = @question.answers.create(answer_params.merge(user: current_user))
+  end
+
+  def update
+    @answer.update(answer_params)
   end
 
   def destroy

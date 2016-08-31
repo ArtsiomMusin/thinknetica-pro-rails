@@ -2,3 +2,9 @@
   p= answer.body
   - if user_signed_in? && current_user.author_of?(answer)
     p= link_to 'Remove answer', answer, method: :delete
+    p= link_to 'Edit'
+    p
+      = form_for answer, remote: true do |f|
+       = f.label :body, 'Answer'
+       = f.text_area :body
+       = f.submit 'Save'
