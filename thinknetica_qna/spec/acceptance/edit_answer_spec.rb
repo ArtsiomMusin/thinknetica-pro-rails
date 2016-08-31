@@ -31,12 +31,12 @@ feature 'Edit answer', %q{
     click_on 'Edit'
     within '.answers' do
       fill_in 'Answer', with: 'edited answer'
-    end
-    click_on 'Save'
+      click_on 'Save'
 
-    expect(page).to_not have_content question.answers.first.body
-    expect(page).to have_content 'edited answer'
-    expect(page).to_not have_selector 'textarea'
+      expect(page).to_not have_content question.answers.first.body
+      expect(page).to have_content 'edited answer'
+      expect(page).to_not have_selector 'textarea'
+    end
   end
 
   scenario 'Authenticated user cannot edit an answer belogns to another user' do
