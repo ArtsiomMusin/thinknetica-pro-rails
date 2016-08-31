@@ -1,5 +1,4 @@
-h2= @question.title
-p=  @question.body
+= render @question
 
 h3 Answers
 .answers
@@ -7,11 +6,8 @@ h3 Answers
   - if @question.answers.empty?
     p No answers yet
 
-- if user_signed_in?
-  = form_for [@question, @answer], remote: true do |f|
-   = f.label :body
-   .answer-message
-   = f.text_area :body
-   p= f.submit 'Add answer'
-  - if current_user.author_of?(@question)
-    p= link_to 'Remove question', @question, method: :delete
+= form_for [@question, @answer], remote: true do |f|
+ = f.label :body
+ .answer-message
+ = f.text_area :body
+ p= f.submit 'Add answer'

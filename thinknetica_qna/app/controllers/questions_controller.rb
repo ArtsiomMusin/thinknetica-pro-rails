@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :destroy]
+  before_action :load_question, only: [:show, :update, :destroy]
   def index
     @questions = Question.all
   end
@@ -21,6 +21,10 @@ class QuestionsController < ApplicationController
       flash[:notice] = 'Could not create a question.'
       render :new
     end
+  end
+
+  def update
+    @question.update(question_params) if current_user.author_of?(@question)
   end
 
   def destroy

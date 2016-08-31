@@ -10,7 +10,9 @@ feature 'Delete question', %q{
   scenario 'Authenticated user deletes a question belongs to this user' do
     sign_in(question.user)
     visit question_path(question)
-    click_on 'Remove question'
+    within '.question' do
+      click_on 'Remove'
+    end
 
     expect(page).to have_content 'Question removed successfully.'
     expect(page).to_not have_content 'MyTitle'
@@ -18,11 +20,15 @@ feature 'Delete question', %q{
   end
   scenario 'Non-authenticated user cannot delete a question' do
     visit question_path(question)
-    expect(page).to_not have_content 'Remove question'
+    within '.question' do
+      expect(page).to_not have_content 'Remove'
+    end
   end
   scenario 'Authenticated user cannot delete a question belongs to another user' do
     sign_in(user)
     visit question_path(question)
-    expect(page).to_not have_content 'Remove question'
+    within '.question' do
+      expect(page).to_not have_content 'Remove'
+    end
   end
 end
