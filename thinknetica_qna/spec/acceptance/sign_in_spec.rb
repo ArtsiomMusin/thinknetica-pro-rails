@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'User sign in', %q{
   In order to ask questions
@@ -27,7 +27,7 @@ feature 'User sign in', %q{
   scenario 'Authenticated user tries to log out' do
     sign_in(user)
     click_on 'Log out'
-    
+
     expect(page).to have_content 'Signed out successfully.'
     expect(current_path).to eq root_path
   end

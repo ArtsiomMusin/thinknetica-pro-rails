@@ -10,7 +10,8 @@ h3 Answers
 - if user_signed_in?
   = form_for [@question, @answer], remote: true do |f|
    = f.label :body
+   .answer-message
    = f.text_area :body
-   = f.submit 'Add answer'
+   p= f.submit 'Add answer'
   - if current_user.author_of?(@question)
     p= link_to 'Remove question', @question, method: :delete

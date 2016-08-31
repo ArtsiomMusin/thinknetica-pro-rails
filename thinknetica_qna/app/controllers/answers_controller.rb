@@ -4,12 +4,7 @@ class AnswersController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
-    @answer = @question.answers.new(answer_params.merge(user: current_user))
-    if @answer.save
-      flash[:notice] = 'Your answer created successfully.'
-    else
-      flash[:notice] = 'Could not create an answer.'
-    end
+    @answer = @question.answers.create(answer_params.merge(user: current_user))
   end
 
   def destroy
