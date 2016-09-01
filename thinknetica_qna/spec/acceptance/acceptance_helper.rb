@@ -6,6 +6,9 @@ RSpec.configure do |config|
 
   config.use_transactional_fixtures = false
 
+  # basically for travis as it turns out to be slooow
+  Capybara.default_wait_time = 20
+
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation)
   end
