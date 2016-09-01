@@ -37,18 +37,18 @@ RSpec.describe AnswersController, type: :controller do
     end
     context 'check for one question' do
       it 'removes an answer' do
-        expect { delete :destroy, id: question.answers.first }.to change(question.answers, :count).by(-1)
+        expect { delete :destroy, id: question.answers.first, format: :js }.to change(question.answers, :count).by(-1)
       end
-      it 'renders question' do
-        delete :destroy, id: question.answers.first
-        expect(response).to redirect_to question_path(question)
+      it 'renders destroy template' do
+        delete :destroy, id: question.answers.first, format: :js
+        expect(response).to render_template 'answers/destroy'
       end
     end
     context 'remove an answer by another user' do
       let(:user) { create(:user) }
       it 'removes an answer from another user' do
         sign_in(user)
-        expect { delete :destroy, id: question_with_answer.answers.first }.to_not change(question_with_answer.answers, :count)
+        expect { delete :destroy, id: question_with_answer.answers.first, format: :js }.to_not change(question_with_answer.answers, :count)
       end
     end
   end

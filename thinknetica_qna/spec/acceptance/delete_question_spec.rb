@@ -7,7 +7,7 @@ feature 'Delete question', %q{
 } do
   given(:user) { create(:user) }
   given(:question) { create(:question) }
-  scenario 'Authenticated user deletes a question belongs to this user' do
+  scenario 'Authenticated user deletes a question belongs to this user', js: true do
     sign_in(question.user)
     visit question_path(question)
     within '.question' do

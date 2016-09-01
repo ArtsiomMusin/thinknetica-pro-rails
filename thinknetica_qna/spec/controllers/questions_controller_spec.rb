@@ -91,17 +91,17 @@ RSpec.describe QuestionsController, type: :controller do
     context 'check for one question' do
       before { sign_in(question.user) }
       it 'removes a question' do
-        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+        expect { delete :destroy, id: question, format: :js }.to change(Question, :count).by(-1)
       end
-      it 'renders index' do
-        delete :destroy, id: question
-        expect(response).to redirect_to root_path
+      it 'renders destroy template' do
+        delete :destroy, id: question, format: :js
+        expect(response).to render_template 'questions/destroy'
       end
     end
     context 'remove a question by another user' do
       it 'cannot remove a question from another user' do
         sign_in(user)
-        expect { delete :destroy, id: question }.to change(Question, :count).by(1)
+        expect { delete :destroy, id: question, format: :js }.to change(Question, :count).by(1)
       end
     end
   end

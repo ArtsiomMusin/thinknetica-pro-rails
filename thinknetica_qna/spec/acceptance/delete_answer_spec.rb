@@ -8,7 +8,7 @@ feature 'Delete answer', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question) }
   before { create(:answer, question: question, user: question.user) }
-  scenario 'Authenticated user deletes an answer belongs to this user' do
+  scenario 'Authenticated user deletes an answer belongs to this user', js: true do
     sign_in(question.user)
     visit question_path(question)
     click_on 'Remove answer', match: :first

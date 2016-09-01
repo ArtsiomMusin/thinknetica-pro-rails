@@ -2,7 +2,7 @@
   h2= question.title
   p=  question.body
   - if user_signed_in? && current_user.author_of?(question)
-    p= link_to 'Remove', question, method: :delete
+    p= link_to 'Remove', question, method: :delete, remote: true
     p= link_to 'Edit', '', class: 'edit-question-link'
     = form_for question, remote: true, html: { id: 'edit-question-form' } do |f|
       .question-message
