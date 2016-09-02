@@ -1,15 +1,18 @@
-.question
-  h2= question.title
-  p=  question.body
-  - if user_signed_in? && current_user.author_of?(question)
-    p= link_to 'Remove', question, method: :delete, remote: true
-    p= link_to 'Edit', '', class: 'edit-question-link'
-    = form_for question, remote: true, html: { id: 'edit-question-form' } do |f|
-      .question-message
-      p
-        = f.label :title
-        = f.text_field :title
-      p
-         = f.label :body
-         = f.text_area :body
-      p= f.submit 'Save'
+div class="panel panel-primary"
+  .question
+    div class="panel-heading panel-primary"
+      h2= question.title
+    .panel-body
+      p=  question.body
+    - if user_signed_in? && current_user.author_of?(question)
+      p= link_to 'Remove', question, method: :delete, remote: true
+      p= link_to 'Edit', '', class: 'edit-question-link'
+      = form_for question, remote: true, html: { id: 'edit-question-form' } do |f|
+        .question-message
+        .form-group
+          = f.label :title
+          = f.text_field :title, class: 'form-control'
+        .form-group
+           = f.label :body
+           = f.text_area :body, class: 'form-control'
+        p= f.submit 'Save', class: 'btn btn-primary btn-sm'

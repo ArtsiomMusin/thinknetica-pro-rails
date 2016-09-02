@@ -1,8 +1,8 @@
 = form_for @question do |f|
-  p
+  .form-group
     = f.label :title
-    = f.text_field :title
-  p
-     = f.label :body
-     = f.text_area :body
-  p= f.submit 'Create'
+    = f.text_field :title, class: 'form-control'
+  .form-group
+    = f.label :body
+    = f.text_area :body, class: 'form-control'
+  p= f.submit 'Create', class: 'btn btn-primary btn-sm'

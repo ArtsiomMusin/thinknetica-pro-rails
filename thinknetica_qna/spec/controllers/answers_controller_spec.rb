@@ -4,6 +4,7 @@ RSpec.describe AnswersController, type: :controller do
   let(:question_with_answer) { create(:question, answers: [answer]) }
   let(:question) { create(:question) }
   let(:answer) { create(:answer) }
+  let(:best_answer) { create(:best_answer) }
 
   describe 'POST #create' do
     before { sign_in(question.user) }
@@ -75,10 +76,37 @@ RSpec.describe AnswersController, type: :controller do
         patch :update, id: answer, answer: { body: '' }, format: :js
         expect(answer.body).to eq 'AnswerText'
       end
-      # it 'renders update template' do
-      #   patch :update, id: answer, answer: { body: '' }, format: :js
-      #   expect(response).to render_template :update
-      # end
+    end
+  end
+
+  describe 'PUT #mark_best' do
+    context 'author conditions' do
+      before { sign_in(answer.user) }
+      it 'marks the requested answer to be best' do
+        put :mark_best, id: answer, answer: { best: true }, format: :js
+        answer.reload
+        expect(answer.best).to eq true
+      end
+      it 'renders best template' do
+        put :mark_best, id: answer, answer: { best: true }, format: :js
+        answer.reload
+        expect(response).to render_template 'answers/mark_best'
+      end
+      it 'does not change the best answer' do
+        put :mark_best, id: answer, answer: { best: nil }, format: :js
+        answer.reload
+        expect(answer.best).to eq false
+      end
+    end
+
+    context 'non-another conditions' do
+      let(:user) { create(:user) }
+      it 'does not change the best answer' do
+        sign_in(user)
+        put :mark_best, id: answer, answer: { best: true }, format: :js
+        answer.reload
+        expect(answer.best).to eq false
+      end
     end
   end
 end
