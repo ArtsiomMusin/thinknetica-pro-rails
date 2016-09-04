@@ -18,11 +18,36 @@ feature 'Mark best answer', %q{
     end
   end
 
-  scenario 'Author can mark only one answer as best'
+  #scenario 'Author changes the best answer to another one'
+  scenario 'Author can mark only one answer as best', js: true do
+    sign_in(question.user)
+    visit question_path(question)
+    within '.answer-1' do
+      click_on 'Mark as Best'
+    end
+    expect(page).to have_selector('.answer-1.glyphicon.glyphicon-thumbs-up')
+    within '.answer-2' do
+      click_on 'Mark as Best'
+    end
+    expect(page).to have_selector('.answer-2.glyphicon.glyphicon-thumbs-up')
+    expect(page).to have_link('Mark as Best', count: 2)
+    expect(page).to have_selector('.glyphicon-thumbs-up', count: 1)
+  end
 
-  scenario 'Author changes the best answer to another one'
+  scenario 'The best answer is always on the top', js: true do
+    sign_in(question.user)
+    visit question_path(question)
+    within '.answer-1' do
+      click_on 'Mark as Best'
+    end
+    sleep(5) # it seems the page hasn't been updated yet when next expect is checked
+    expect(all('div', text: /answer/)[1][:class]).to have_content 'glyphicon-thumbs-up'
 
-  scenario 'The best answer is always on the top'
+    within '.answer-2' do
+      click_on 'Mark as Best'
+    end
+    expect(all('div', text: /answer/)[1][:class]).to have_content 'glyphicon-thumbs-up'
+  end
 
   scenario 'Authenticated user cannot mark an answer as best if it\'s not his question' do
     sign_in(user)

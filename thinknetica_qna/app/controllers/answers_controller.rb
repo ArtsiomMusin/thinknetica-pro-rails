@@ -1,7 +1,7 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
   before_action :load_answer, only: [:update, :destroy, :mark_best]
-  before_action :update_answer, only: [:update, :mark_best]
+  before_action :update_answer, only: [:update]
 
   def create
     @question = Question.find(params[:question_id])
@@ -16,13 +16,17 @@ class AnswersController < ApplicationController
   end
 
   def mark_best
-    #@answer.question.answers.each {|a| a.best = false; a.save}
-    @answer.update(answer_params) if current_user.author_of?(@answer)
+    if current_user.author_of?(@answer)
+      @question = @answer.question
+      @question.answers.each {|a| a.update_attribute(:best, false)}
+      @answer.update_attribute(:best, true)
+      @question.answers.reload
+    end
   end
 
   private
   def answer_params
-    params.require(:answer).permit(:body, :best)
+    params.require(:answer).permit(:body)
   end
 
   def load_answer

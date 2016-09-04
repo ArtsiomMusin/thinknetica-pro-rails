@@ -2,9 +2,7 @@
 
 h3 Answers
 .answers
-  = render @question.answers
-  - if @question.answers.empty?
-    p No answers yet
+  = render 'answers/answers'
 
 = form_for [@question, @answer], remote: true do |f|
  .form-group

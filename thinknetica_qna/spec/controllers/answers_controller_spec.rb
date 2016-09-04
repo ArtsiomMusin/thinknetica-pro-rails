@@ -83,27 +83,27 @@ RSpec.describe AnswersController, type: :controller do
     context 'author conditions' do
       before { sign_in(answer.user) }
       it 'marks the requested answer to be best' do
-        put :mark_best, id: answer, answer: { best: true }, format: :js
+        put :mark_best, id: answer, format: :js
         answer.reload
         expect(answer.best).to eq true
       end
       it 'renders best template' do
-        put :mark_best, id: answer, answer: { best: true }, format: :js
+        put :mark_best, id: answer, format: :js
         answer.reload
         expect(response).to render_template 'answers/mark_best'
       end
-      it 'does not change the best answer' do
-        put :mark_best, id: answer, answer: { best: nil }, format: :js
-        answer.reload
-        expect(answer.best).to eq false
-      end
+      # it 'does not change the best answer' do
+      #   put :mark_best, id: answer, answer: { best: nil }, format: :js
+      #   answer.reload
+      #   expect(answer.best).to eq false
+      # end
     end
 
     context 'non-another conditions' do
       let(:user) { create(:user) }
       it 'does not change the best answer' do
         sign_in(user)
-        put :mark_best, id: answer, answer: { best: true }, format: :js
+        put :mark_best, id: answer, format: :js
         answer.reload
         expect(answer.best).to eq false
       end

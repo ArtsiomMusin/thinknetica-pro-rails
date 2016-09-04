@@ -1,2 +1,1 @@
-$('.answer-' + '<%= j @answer.id.to_s %>').addClass('glyphicon glyphicon-thumbs-up')
-$('#best-answer-' + '<%= j @answer.id.to_s %>').hide()
+$('.answers').html('<%= j render 'answers' %>')
