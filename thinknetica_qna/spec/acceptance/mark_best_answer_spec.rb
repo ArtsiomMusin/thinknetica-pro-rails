@@ -41,12 +41,22 @@ feature 'Mark best answer', %q{
       click_on 'Mark as Best'
     end
     sleep(5) # it seems the page hasn't been updated yet when next expect is checked
+    # this is a bug in webkit
+    # https://github.com/thoughtbot/capybara-webkit/issues/319
+    # adding a workaround, but this is not working only on annoying travis
+    RSpec.configure do |config|
+      Capybara.automatic_reload = false
+    end
     expect(all('div', text: /answer/)[1][:class]).to have_content 'glyphicon-thumbs-up'
 
     within '.answer-2' do
       click_on 'Mark as Best'
     end
     expect(all('div', text: /answer/)[1][:class]).to have_content 'glyphicon-thumbs-up'
+    # disabling the workaround
+    RSpec.configure do |config|
+      Capybara.automatic_reload = true
+    end
   end
 
   scenario 'Authenticated user cannot mark an answer as best if it\'s not his question' do
