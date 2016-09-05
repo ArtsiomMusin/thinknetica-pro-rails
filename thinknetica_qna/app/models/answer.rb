@@ -4,5 +4,11 @@ class Answer < ApplicationRecord
   belongs_to :user
   validates :body, :question_id, presence: true
   validates :user_id, :body, presence: true
-  validates_inclusion_of :best, in: [true, false]
+
+  def make_best
+    Answer.transaction do
+      question.answers.update_all(best: false)
+      update_attribute(:best, true)
+    end
+  end
 end

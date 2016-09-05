@@ -81,6 +81,7 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'PUT #mark_best' do
     context 'author conditions' do
+      let(:answer) { create(:answer, question: question, user: question.user) }
       before { sign_in(answer.user) }
       it 'marks the requested answer to be best' do
         put :mark_best, id: answer, format: :js

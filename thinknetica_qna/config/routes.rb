@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :questions do
     resources :answers, shallow: true do
       member do
-        put 'mark_best', to: 'answers#mark_best'
+        put 'mark_best'
       end
     end
   end
