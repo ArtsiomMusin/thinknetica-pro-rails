@@ -95,7 +95,7 @@ RSpec.describe QuestionsController, type: :controller do
       end
       it 'renders destroy template' do
         delete :destroy, id: question, format: :js
-        expect(response).to render_template 'questions/destroy'
+        expect(response).to redirect_to root_path
       end
     end
     context 'remove a question by another user' do

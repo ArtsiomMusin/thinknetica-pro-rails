@@ -4,5 +4,5 @@
   <% end %>
 <% else %>
   $('.answer-message').html('<%= j 'Your answer updated successfully.' %>')
-  $('.answer-' + '<%= j @answer.id.to_s %>').replaceWith('<%= j render @answer %>');
+  $('.answer-' + '<%= @answer.id %>').replaceWith('<%= j render @answer %>');
 <% end %>

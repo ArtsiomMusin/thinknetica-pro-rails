@@ -29,6 +29,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     @question.destroy! if current_user.author_of?(@question)
+    redirect_to root_path, notice: 'Question removed successfully.'
   end
 
   private
