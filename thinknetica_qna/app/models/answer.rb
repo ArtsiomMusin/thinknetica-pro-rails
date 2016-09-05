@@ -7,8 +7,9 @@ class Answer < ApplicationRecord
 
   def make_best
     Answer.transaction do
-      question.answers.update_all(best: false)
-      update_attribute(:best, true)
+      updated_count = question.answers.update_all(best: false)
+      raise ActiveRecord::Rollback unless updated_count == question.answers.count
+      update!(best: true)
     end
   end
 end

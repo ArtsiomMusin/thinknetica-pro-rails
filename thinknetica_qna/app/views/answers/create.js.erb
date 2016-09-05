@@ -3,7 +3,7 @@
     $('.answer-message').html('<%= j message %>')
   <% end %>
 <% else %>
-  $('.answer-message').html('<%= j 'Your answer created successfully.' %>')
+  $('.answer-message').html('Your answer created successfully.')
   $('.answers').append('<%= j render @answer %>')
   $('#answer_body').val('')
 <% end %>

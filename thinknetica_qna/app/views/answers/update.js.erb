@@ -3,6 +3,6 @@
     $('.answer-message').html('<%= j message %>')
   <% end %>
 <% else %>
-  $('.answer-message').html('<%= j 'Your answer updated successfully.' %>')
+  $('.answer-message').html('Your answer updated successfully.')
   $('.answer-' + '<%= @answer.id %>').replaceWith('<%= j render @answer %>');
 <% end %>
