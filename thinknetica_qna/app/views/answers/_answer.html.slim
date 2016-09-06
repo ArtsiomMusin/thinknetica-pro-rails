@@ -1,6 +1,10 @@
 div class="answer-#{answer.id} #{answer.best ? 'glyphicon glyphicon-thumbs-up' : ''}"
   - if answer.persisted?
     = answer.body
+    p Attachments:
+    ul
+      - answer.attachments.each do |a|
+        li= link_to a.file.identifier, a.file.url
     - if user_signed_in? && current_user.author_of?(answer)
       p= link_to 'Remove answer', answer, method: :delete, remote: true
       - unless answer.best?
