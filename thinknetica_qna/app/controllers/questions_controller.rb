@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :destroy]
+  before_action :load_question, only: [:show, :update, :destroy]
   def index
     @questions = Question.all
   end
@@ -23,11 +23,13 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def update
+    @question.update(question_params) if current_user.author_of?(@question)
+  end
+
   def destroy
-    if current_user.author_of?(@question)
-      @question.destroy!
-      redirect_to root_path, notice: 'Question removed successfully.'
-    end
+    @question.destroy! if current_user.author_of?(@question)
+    redirect_to root_path, notice: 'Question removed successfully.'
   end
 
   private

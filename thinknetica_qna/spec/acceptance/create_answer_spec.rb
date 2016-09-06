@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Create answer', %q{
   In order to answer questions from other users
@@ -31,6 +31,6 @@ feature 'Create answer', %q{
     fill_in 'Body', with: ''
     click_on 'Add answer'
     expect(current_path).to eq question_path(question)
-    expect(page).to have_content 'Could not create an answer.'
+    expect(page).to have_content 'Body can\'t be blank'
   end
 end

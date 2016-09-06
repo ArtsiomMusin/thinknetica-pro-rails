@@ -1,4 +1,14 @@
-- if answer.persisted?
-  p= answer.body
-  - if user_signed_in? && current_user.author_of?(answer)
-    p= link_to 'Remove answer', answer, method: :delete
+div class="answer-#{answer.id} #{answer.best ? 'glyphicon glyphicon-thumbs-up' : ''}"
+  - if answer.persisted?
+    = answer.body
+    - if user_signed_in? && current_user.author_of?(answer)
+      p= link_to 'Remove answer', answer, method: :delete, remote: true
+      - unless answer.best?
+        p= link_to 'Mark as Best', mark_best_answer_path(answer), method: :put, remote: true
+      p= link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+      p
+        = form_for answer, remote: true, html: { id: "edit-answer-#{answer.id}" } do |f|
+         .form-group
+           = f.label :body, 'Answer'
+           = f.text_area :body, class: 'form-control'
+         = f.submit 'Save', class: 'btn btn-primary btn-sm'

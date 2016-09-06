@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'Show question and answers', %q{
   In order to see questions and answers from other users
