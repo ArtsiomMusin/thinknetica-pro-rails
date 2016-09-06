@@ -2,8 +2,12 @@
 class Answer < ApplicationRecord
   belongs_to :question
   belongs_to :user
+  has_many :attachments, as: :attachable
+
   validates :body, :question_id, presence: true
   validates :user_id, :body, presence: true
+
+  accepts_nested_attributes_for :attachments
 
   def make_best
     Answer.transaction do

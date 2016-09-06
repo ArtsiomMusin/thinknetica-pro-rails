@@ -1,5 +1,4 @@
 = render @question
-
 p Attachments:
 ul
   - @question.attachments.each do |a|
@@ -14,4 +13,5 @@ h3 Answers
    = f.label :body
    .answer-message
    = f.text_area :body, class: 'form-control'
+   = render 'attachments', f: f
  p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
