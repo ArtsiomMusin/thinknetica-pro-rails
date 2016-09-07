@@ -1,8 +1,5 @@
 = render @question
-p Attachments:
-ul
-  - @question.attachments.each do |a|
-    li= link_to a.file.identifier, a.file.url
+= render 'attachments/list_attachments', attachable: @question
 
 h3 Answers
 .answers
@@ -13,5 +10,5 @@ h3 Answers
    = f.label :body
    .answer-message
    = f.text_area :body, class: 'form-control'
-   = render 'attachments', f: f
+   = render 'attachments/attachments', f: f
  p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
