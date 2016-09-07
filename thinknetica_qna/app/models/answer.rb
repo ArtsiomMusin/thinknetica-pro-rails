@@ -4,10 +4,11 @@ class Answer < ApplicationRecord
   belongs_to :user
   has_many :attachments, as: :attachable
 
-  validates :body, :question_id, presence: true
-  validates :user_id, :body, presence: true
+  validates :body, :question_id, :user_id, presence: true
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments,
+    reject_if: proc { |attributes| attributes['file'].blank? },
+    allow_destroy: true
 
   def make_best
     Answer.transaction do
