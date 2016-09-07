@@ -13,4 +13,4 @@ addons:
 script:
   - export RAILS_ENV=test
   - bundle exec rake db:create db:schema:load db:test:prepare
-  - bundle exec rspec --color --require spec_helper
+  - bundle exec rspec ./spec/acceptance/mark_best_answer_spec.rb --color --require spec_helper

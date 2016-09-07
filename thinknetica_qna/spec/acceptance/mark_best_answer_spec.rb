@@ -5,8 +5,8 @@ feature 'Mark best answer', %q{
   As an authenticated user
   I want to be able to select the best answer
 } do
-  given(:user) { create(:user) }
-  given(:question) { create(:question) }
+  given!(:user) { create(:user) }
+  given!(:question) { create(:question) }
   before { create_list(:answer, 3, question: question, user: question.user) }
   scenario 'Author marks one answer as best', js: true do
     sign_in(question.user)
