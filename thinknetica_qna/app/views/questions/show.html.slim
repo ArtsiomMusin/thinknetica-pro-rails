@@ -1,5 +1,6 @@
 = render @question
-= render 'attachments/list_attachments', attachable: @question
+.question-attachments
+  = render 'attachments/list_attachments', attachable: @question
 
 h3 Answers
 .answers

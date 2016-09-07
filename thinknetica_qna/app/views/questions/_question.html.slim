@@ -15,4 +15,5 @@ div class="panel panel-primary"
         .form-group
            = f.label :body
            = f.text_area :body, class: 'form-control'
+        = render 'attachments/attachments', f: f
         p= f.submit 'Save', class: 'btn btn-primary btn-sm'
