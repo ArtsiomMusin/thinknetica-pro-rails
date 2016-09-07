@@ -4,6 +4,10 @@
   <% end %>
 <% else %>
   $('.answer-message').html('Your answer created successfully.')
-  $('.answers').append('<%= j render @answer %>')
+  <% if remotipart_submitted? %>
+    $('.answers').append("<%=  j "#{render(@answer)}" %>");
+  <% else %>
+    $('.answers').append("<%=  j render(@answer) %>");
+  <% end %>
   $('#answer_body').val('')
 <% end %>
