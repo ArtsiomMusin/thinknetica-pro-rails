@@ -25,8 +25,16 @@ feature 'Add files to question', %q{
     visit new_question_path
     fill_in 'Title', with: 'Test Title'
     fill_in 'Body', with: 'Question text'
-    attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"
-    attach_file 'File', "#{Rails.root}/spec/rails_helper.rb"
+
+    within '.nested-fields' do
+      attach_file 'File', "#{Rails.root}/spec/spec_helper.rb", id: 'question_attachments_attributes_0_file'
+    end
+    click_on 'Add Attachment'
+    within '.nested-fields' do
+      save_and_open_page
+      attach_file 'File', "#{Rails.root}/spec/rails_helper.rb", id: 'question_attachments_attributes_1_file'
+    end
+    save_and_open_page
     click_on 'Create'
 
     expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'

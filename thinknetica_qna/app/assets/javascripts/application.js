@@ -12,7 +12,14 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require cocoon
 //= require jquery.remotipart
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
+
+$(document).ready(function() {
+    $("a.add_fields.links").
+      data("association-insertion-method", 'after').
+      data("association-insertion-node", 'this');
+});
