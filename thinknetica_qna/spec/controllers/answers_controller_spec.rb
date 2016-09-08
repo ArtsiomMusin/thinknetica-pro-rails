@@ -31,7 +31,7 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
-  describe 'GET #destroy' do
+  describe 'DELETE #destroy' do
     before do
       sign_in(question.user)
       question.answers << create(:answer, question: question, user: question.user)

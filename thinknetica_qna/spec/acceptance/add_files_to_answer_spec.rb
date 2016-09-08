@@ -41,6 +41,22 @@ feature 'Add files to answer', %q{
     expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
   end
 
-  scenario 'Author deletes an attachment'
-  scenario 'Another user cannot delete an attachment belongs to another user'
+  scenario 'Author deletes an attachment', js: true do
+    answer.attachments << attachment
+    sign_in(answer.user)
+    visit question_path(question)
+    within '.answers' do
+      click_on 'Remove Attachment'
+      expect(page).to_not have_link 'spec_helper.rb'
+    end
+  end
+
+  scenario 'Another user cannot delete an attachment belongs to another user', js: true do
+    answer.attachments << attachment
+    sign_in(user)
+    visit question_path(question)
+    within '.answers' do
+      expect(page).to_not have_link 'Remove Attachment'
+    end
+  end
 end

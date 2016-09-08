@@ -105,9 +105,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
     context 'remove a question by another user' do
+      let!(:question) { create(:question) }
       it 'cannot remove a question from another user' do
         sign_in(user)
-        expect { delete :destroy, id: question, format: :js }.to change(Question, :count).by(1)
+        expect { delete :destroy, id: question, format: :js }.to_not change(Question, :count)
       end
     end
   end
