@@ -18,6 +18,9 @@ RSpec.describe QuestionsController, type: :controller do
     it 'shows one specific question' do
       expect(assigns(:question)).to eq question
     end
+    it 'creates a new attachment for an answer' do
+      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
+    end
     it 'renders index' do
       expect(response).to render_template :show
     end
@@ -28,6 +31,9 @@ RSpec.describe QuestionsController, type: :controller do
     before { get :new }
     it 'creates a new question' do
       expect(assigns(:question)).to be_a_new(Question)
+    end
+    it 'creates a new attachment for the question' do
+      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
     it 'renders new' do
       expect(response).to render_template :new
@@ -99,9 +105,10 @@ RSpec.describe QuestionsController, type: :controller do
       end
     end
     context 'remove a question by another user' do
+      let!(:question) { create(:question) }
       it 'cannot remove a question from another user' do
         sign_in(user)
-        expect { delete :destroy, id: question, format: :js }.to change(Question, :count).by(1)
+        expect { delete :destroy, id: question, format: :js }.to_not change(Question, :count)
       end
     end
   end
