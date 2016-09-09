@@ -93,6 +93,36 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'PUT #vote' do
+    context 'authenticated user conditions' do
+      sign_in_user
+      it 'votes for the question' do
+        put :vote, id: question, question: { positive: true }, format: :js
+        question.reload
+        expect(question).to change(question.votes, :count).by(1)
+      end
+      it 'rejects the vote' do
+        put :vote, id: question, question: { reject: true }, format: :js
+        question.reload
+        expect(question).to change(question.votes, :count).by(-1)
+      end
+      it 'renders rank template' do
+        put :vote, id: question, question: { positive: false }, format: :js
+        question.reload
+        expect(response).to render_template 'questions/vote_stats'
+      end
+    end
+
+    context 'another conditions' do
+      it 'does not change the vote count' do
+        sign_in(question.user)
+        put :vote, id: question, question: { positive: true }, format: :js
+        question.reload
+        expect(question).to_not change(question.votes, :count)
+      end
+    end
+  end
+
   describe 'DELETE #destroy' do
     context 'check for one question' do
       before { sign_in(question.user) }

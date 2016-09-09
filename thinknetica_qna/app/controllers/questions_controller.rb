@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :update, :destroy]
+  before_action :load_question, only: [:show, :update, :vote, :destroy]
   def index
     @questions = Question.all
   end
@@ -29,6 +29,10 @@ class QuestionsController < ApplicationController
     @question.update(question_params) if current_user.author_of?(@question)
   end
 
+  def vote
+    @question.votes.create(vote_params) unless current_user.author_of?(@question)
+  end
+
   def destroy
     @question.destroy! if current_user.author_of?(@question)
     redirect_to root_path, notice: 'Question removed successfully.'
@@ -37,6 +41,10 @@ class QuestionsController < ApplicationController
   private
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:id, :_destroy, :file])
+  end
+
+  def vote_params
+    params.require(:question).permit(:positive])
   end
 
   def load_question
