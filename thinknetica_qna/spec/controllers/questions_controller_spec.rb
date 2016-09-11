@@ -97,28 +97,19 @@ RSpec.describe QuestionsController, type: :controller do
     context 'authenticated user conditions' do
       sign_in_user
       it 'votes for the question' do
-        put :vote, id: question, question: { positive: true }, format: :js
-        question.reload
-        expect(question).to change(question.votes, :count).by(1)
+        put :vote_yes, id: question, format: :json
+        expect(question.votes.first.positive).to be true
       end
       it 'rejects the vote' do
-        put :vote, id: question, question: { reject: true }, format: :js
-        question.reload
-        expect(question).to change(question.votes, :count).by(-1)
-      end
-      it 'renders rank template' do
-        put :vote, id: question, question: { positive: false }, format: :js
-        question.reload
-        expect(response).to render_template 'questions/vote_stats'
+        question.votes.create(positive: true, user: @user)
+        expect { put :reject_vote, id: question, format: :json }.to change(question.votes, :count).by(-1)
       end
     end
 
     context 'another conditions' do
       it 'does not change the vote count' do
         sign_in(question.user)
-        put :vote, id: question, question: { positive: true }, format: :js
-        question.reload
-        expect(question).to_not change(question.votes, :count)
+        expect { put :vote_no, id: question, format: :json }.to_not change(question.votes, :count)
       end
     end
   end

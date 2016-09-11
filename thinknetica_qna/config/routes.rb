@@ -5,7 +5,9 @@ Rails.application.routes.draw do
 
   resources :questions do
     member do
-      put 'vote'
+      put 'vote_yes'
+      put 'vote_no'
+      put 'reject_vote'
     end
     resources :answers, shallow: true do
       member do

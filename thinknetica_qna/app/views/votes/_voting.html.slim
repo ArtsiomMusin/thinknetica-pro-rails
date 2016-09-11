@@ -1,0 +1,7 @@
+.vote-message
+p= button_to 'Vote+', vote_yes_question_path, method: :put, remote: true, data: { type: :json }, class: 'btn btn-success', form_class: 'voting'
+.vote-rating
+  - unless question.vote_rating == '+0'
+    = question.vote_rating
+p= button_to 'Vote-', vote_no_question_path, method: :put, remote: true, data: { type: :json }, class: 'btn btn-warning', form_class: 'voting'
+p= button_to 'Reject Vote', reject_vote_question_path, method: :put, remote: true, data: { type: :json }, class: 'btn btn-danger', form_class: 'voting'

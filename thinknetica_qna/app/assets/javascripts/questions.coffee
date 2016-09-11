@@ -7,7 +7,16 @@ ready = ->
     $(this).hide();
     $('form#edit-question-form').show()
 
+votes_rating = ->
+  $('.voting').bind 'ajax:success', (e, data, status, xhr) ->
+    votes_info = $.parseJSON(xhr.responseText)
+    $('.vote-rating').html('<p>' + votes_info.rating + '<p>')
+  .bind 'ajax:error', (e, xhr, status, error) ->
+    errors = $.parseJSON(xhr.responseText)
+    $.each errors, (index, value) ->
+      $('.vote-message').html(value)
 $(document).ready(ready)
 $(document).on("turbolinks:load", ready)
 $(document).on('page:load', ready)
 $(document).on('page:update', ready)
+$(document).on('turbolinks:load', votes_rating)

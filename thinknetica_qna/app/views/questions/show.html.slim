@@ -1,4 +1,5 @@
 = render @question
+= render 'votes/voting', question: @question, vote: @vote
 .question-attachments
   = render 'attachments/list_attachments', attachable: @question
 

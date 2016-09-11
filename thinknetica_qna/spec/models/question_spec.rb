@@ -10,7 +10,6 @@ RSpec.describe Question, type: :model do
   it { should validate_presence_of(:body) }
   it { should validate_presence_of(:user_id) }
   it { should accept_nested_attributes_for(:attachments).allow_destroy(true) }
-  it { should accept_nested_attributes_for(:votes).allow_destroy(true) }
 
   context 'validates methods' do
     let(:question) { create(:question) }
