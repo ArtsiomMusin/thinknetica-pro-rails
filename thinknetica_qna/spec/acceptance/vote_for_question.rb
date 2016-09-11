@@ -9,7 +9,7 @@ feature 'Vote for question', %q{
   given(:question) { create(:question) }
   scenario 'Authenticated user votes for a question' do
     sign_in(user)
-    visit questions_path
+    visit question_path(question)
 
     click_on 'Vote+'
     within '.votes-rating' do
@@ -20,7 +20,7 @@ feature 'Vote for question', %q{
   end
 
   scenario 'Non-authenticated user cannot vote' do
-    visit questions_path
+    visit question_path(question)
 
     expect(page).to_not have_content 'Vote+'
     expect(page).to_not have_content 'Vote-'
@@ -29,7 +29,7 @@ feature 'Vote for question', %q{
 
   scenario 'Author of the question cannot vote for his question' do
     sign_in(question.user)
-    visit questions_path
+    visit question_path(question)
 
     expect(page).to_not have_content 'Vote+'
     expect(page).to_not have_content 'Vote-'
@@ -38,7 +38,7 @@ feature 'Vote for question', %q{
 
   scenario 'Authenticated user cancels previous vote and re-votes for another question' do
     sign_in(user)
-    visit questions_path
+    visit question_path(question)
 
     click_on 'Vote+'
     click_on 'Reject Vote'

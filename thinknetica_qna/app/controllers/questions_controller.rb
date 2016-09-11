@@ -29,9 +29,9 @@ class QuestionsController < ApplicationController
     @question.update(question_params) if current_user.author_of?(@question)
   end
 
-  def vote
-    @question.votes.create(vote_params) unless current_user.author_of?(@question)
-  end
+  # def vote
+  #   @question.votes.create(vote_params) unless current_user.author_of?(@question)
+  # end
 
   def destroy
     @question.destroy! if current_user.author_of?(@question)
@@ -44,7 +44,7 @@ class QuestionsController < ApplicationController
   end
 
   def vote_params
-    params.require(:question).permit(:positive])
+    params.require(:question).permit(:positive)
   end
 
   def load_question
