@@ -5,10 +5,56 @@ feature 'Vote for answer', %q{
   As an authenticated user
   I want to be able to vote for answers
 } do
-  scenario 'Authenticated user votes for an answer'
-  scenario 'Author of the answer cannot vote for his answer'
-  scenario 'Authenticated user adds a positive or negative vote'
-  scenario 'Authenticated user cannot vote the second time'
-  scenario 'Authenticated user cancels previous vote and re-votes for another answer'
-  scenario 'Answer has the voting statistics'
+  given(:user) { create(:user) }
+  given(:answer) { create(:answer) }
+  scenario 'Authenticated user votes for an answer', js: true do
+    sign_in(user)
+    visit question_path(answer.question)
+
+    within '.answers' do
+      expect(page).to_not have_selector(:link_or_button, 'Reject Vote')
+      click_on 'Vote+'
+      within '.vote-rating' do
+        expect(page).to have_content '+1'
+      end
+      expect(page).to_not have_selector(:link_or_button, 'Vote+')
+      expect(page).to_not have_selector(:link_or_button, 'Vote-')
+      expect(page).to have_selector(:link_or_button, 'Reject Vote')
+    end
+  end
+
+  scenario 'Non-authenticated user cannot vote', js: true  do
+    visit question_path(answer.question)
+
+    within '.answers' do
+      expect(page).to_not have_selector(:link_or_button, 'Vote+')
+      expect(page).to_not have_selector(:link_or_button, 'Vote-')
+      expect(page).to_not have_selector(:link_or_button, 'Reject Vote')
+    end
+  end
+
+  scenario 'Author of the question cannot vote for his question', js: true do
+    sign_in(answer.user)
+    visit question_path(answer.question)
+
+    within '.answers' do
+      expect(page).to_not have_selector(:link_or_button, 'Vote+')
+      expect(page).to_not have_selector(:link_or_button, 'Vote-')
+      expect(page).to_not have_selector(:link_or_button, 'Reject Vote')
+    end
+  end
+
+  scenario 'Authenticated user cancels previous vote and re-votes for another question', js: true do
+    sign_in(user)
+    visit question_path(answer.question)
+
+    within '.answers' do
+      click_on 'Vote+'
+      click_on 'Reject Vote'
+      click_on 'Vote-'
+      within '.vote-rating' do
+        expect(page).to have_content '-1'
+      end
+    end
+  end
 end

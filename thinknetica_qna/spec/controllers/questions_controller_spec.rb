@@ -93,27 +93,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'PUT #vote' do
-    context 'authenticated user conditions' do
-      sign_in_user
-      it 'votes for the question' do
-        put :vote_yes, id: question, format: :json
-        expect(question.votes.first.positive).to be true
-      end
-      it 'rejects the vote' do
-        question.votes.create(positive: true, user: @user)
-        expect { put :reject_vote, id: question, format: :json }.to change(question.votes, :count).by(-1)
-      end
-    end
-
-    context 'another conditions' do
-      it 'does not change the vote count' do
-        sign_in(question.user)
-        expect { put :vote_no, id: question, format: :json }.to_not change(question.votes, :count)
-      end
-    end
-  end
-
   describe 'DELETE #destroy' do
     context 'check for one question' do
       before { sign_in(question.user) }
