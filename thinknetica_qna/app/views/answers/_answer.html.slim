@@ -1,7 +1,7 @@
 div class="answer-#{answer.id} #{answer.best ? 'glyphicon glyphicon-thumbs-up' : ''}"
   - if answer.persisted?
     = answer.body
-    = render 'votes/voting', object: answer
+    = render 'votes/voting_answer', object: answer
     .answer-attachments
       = render 'attachments/list_attachments', attachable: answer
     - if user_signed_in? && current_user.author_of?(answer)

@@ -7,36 +7,36 @@ ready = ->
     $(this).hide();
     $('form#edit-question-form').show()
 
-votes_rating = ->
-  $('.voting').bind 'ajax:success', (e, data, status, xhr) ->
+votes_rating_question = ->
+  $('.voting-question').bind 'ajax:success', (e, data, status, xhr) ->
     votes_info = $.parseJSON(xhr.responseText);
     if(votes_info.rating != '+0')
-        $('.vote-rating').html('<p>' + votes_info.rating + '<p>')
+        $('.vote-rating-question').html('<p>' + votes_info.rating + '<p>')
     else
-        $('.vote-rating').html('')
-    $('.voting-choice-action').hide()
-    $('.voting-reject-action').show()
+        $('.vote-rating-question').html('')
+    $('.voting-choice-question').hide()
+    $('.voting-reject-question').show()
   .bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
-      $('.vote-message').html(value)
-votes_reject = ->
-  $('.voting-reject').bind 'ajax:success', (e, data, status, xhr) ->
+      $('.vote-message-question').html(value)
+votes_reject_question = ->
+  $('.voting-reject-question').bind 'ajax:success', (e, data, status, xhr) ->
     votes_info = $.parseJSON(xhr.responseText);
     if(votes_info.rating != '+0')
-        $('.vote-rating').html('<p>' + votes_info.rating + '<p>')
+        $('.vote-rating-question').html('<p>' + votes_info.rating + '<p>')
     else
-        $('.vote-rating').html('')
-    $('.voting-choice-action').css('display', 'inline-block')
-    $('.voting-reject-action').hide()
+        $('.vote-rating-question').html('')
+    $('.voting-choice-question').css('display', 'inline-block')
+    $('.voting-reject-question').hide()
   .bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
-      $('.vote-message').html(value)
+      $('.vote-message-question').html(value)
 
 $(document).ready(ready)
 $(document).on("turbolinks:load", ready)
 $(document).on('page:load', ready)
 $(document).on('page:update', ready)
-$(document).on('turbolinks:load', votes_rating)
-$(document).on('turbolinks:load', votes_reject)
+$(document).on('turbolinks:load', votes_rating_question)
+$(document).on('turbolinks:load', votes_reject_question)

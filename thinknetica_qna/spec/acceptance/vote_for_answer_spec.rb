@@ -14,7 +14,7 @@ feature 'Vote for answer', %q{
     within '.answers' do
       expect(page).to_not have_selector(:link_or_button, 'Reject Vote')
       click_on 'Vote+'
-      within '.vote-rating' do
+      within ".vote-rating-answer-#{answer.id}" do
         expect(page).to have_content '+1'
       end
       expect(page).to_not have_selector(:link_or_button, 'Vote+')
@@ -52,7 +52,7 @@ feature 'Vote for answer', %q{
       click_on 'Vote+'
       click_on 'Reject Vote'
       click_on 'Vote-'
-      within '.vote-rating' do
+      within ".vote-rating-answer-#{answer.id}" do
         expect(page).to have_content '-1'
       end
     end

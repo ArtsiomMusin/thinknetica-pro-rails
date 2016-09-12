@@ -19,7 +19,7 @@ module Voted
       if @vote
         respond_to do |format|
           if @vote.destroy
-            format.json { render json: {rating: @votable.vote_rating} }
+            format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }
           else
             format.json {
               render json: @vote.errors.full_messages, status: :unprocessable_entity }
@@ -39,7 +39,7 @@ module Voted
       @vote = @votable.votes.build(positive: positive, user: current_user)
       respond_to do |format|
         if @vote.save
-          format.json { render json: {rating: @votable.vote_rating} }
+          format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }
         else
           format.json {
             render json: @vote.errors.full_messages, status: :unprocessable_entity }
