@@ -7,7 +7,7 @@ RSpec.describe User, type: :model do
   it { should have_many(:questions) }
   it { should have_many(:answers) }
 
-  context 'validates author_of? method' do
+  context 'validates methods' do
     let(:question) { create(:question) }
     let(:user) { create(:user) }
     it 'has a question' do
@@ -15,6 +15,17 @@ RSpec.describe User, type: :model do
     end
     it 'does not have a question' do
       expect(user).to_not be_author_of(question)
+    end
+    it 'can vote for a question' do
+      expect(user.can_vote?(question)).to be true
+    end
+    it 'cannot vote for a question' do
+      question.votes.create(positive: true, user: question.user)
+      expect(question.user.can_vote?(question)).to be false
+    end
+    it 'cannot vote for the question voted' do
+      question.votes.create(positive: true, user: user)
+      expect(user.can_vote?(question)).to be false
     end
   end
 

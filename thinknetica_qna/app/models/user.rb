@@ -10,4 +10,8 @@ class User < ApplicationRecord
   def author_of?(entity)
     id == entity.user_id
   end
+
+  def can_vote?(entity)
+    !author_of?(entity) && !entity.voted?(self)
+  end
 end

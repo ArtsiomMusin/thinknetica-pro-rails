@@ -6,4 +6,8 @@ module Votable
     diff = votes.where(positive: true).count - votes.where(positive: false).count
     sprintf('%+d', diff)
   end
+
+  def voted?(user)
+    !votes.where(user: user).empty?
+  end
 end
