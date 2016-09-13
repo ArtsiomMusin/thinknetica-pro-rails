@@ -33,7 +33,7 @@ feature 'Vote for answer', %q{
     end
   end
 
-  scenario 'Author of the question cannot vote for his question', js: true do
+  scenario 'Author of the answer cannot vote for his answer', js: true do
     sign_in(answer.user)
     visit question_path(answer.question)
 
@@ -44,7 +44,7 @@ feature 'Vote for answer', %q{
     end
   end
 
-  scenario 'Authenticated user cancels previous vote and re-votes for another question', js: true do
+  scenario 'Authenticated user cancels previous vote and re-votes for another answer', js: true do
     sign_in(user)
     visit question_path(answer.question)
 

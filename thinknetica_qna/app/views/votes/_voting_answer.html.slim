@@ -9,5 +9,5 @@ div class="vote-rating-answer-#{object.id}"
   div class="voting-choice-answer-#{object.id}" style=(current_user.can_vote?(object) ? 'display: inline-block;' : 'display: none;' )
     p= button_to 'Vote-', vote_no_answer_path(object), method: :put, remote: true, data: { type: :json }, class: 'btn btn-warning', form_class: 'voting-answer'
 
-  div class="voting-reject-answer-#{object.id}" style=('display: none;' if current_user.author_of?(object) || !object.voted?(current_user))
+  div class="voting-reject-answer-#{object.id}" style=('display: none;' unless current_user.can_reject_vote?(object))
     p= button_to 'Reject Vote', reject_vote_answer_path(object), method: :put, remote: true, data: { type: :json }, class: 'btn btn-danger', form_class: 'voting-reject-answer'

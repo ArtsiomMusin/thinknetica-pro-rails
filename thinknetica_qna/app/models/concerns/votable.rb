@@ -1,13 +1,15 @@
 module Votable
   extend ActiveSupport::Concern
-  include HasVotes
+  included do
+    has_many :votes, as: :votable
+  end
 
   def vote_rating
     diff = votes.where(positive: true).count - votes.where(positive: false).count
     sprintf('%+d', diff)
   end
 
-  def voted?(user)
-    !votes.where(user: user).empty?
+  def build_vote(params)
+    votes.build(params)
   end
 end

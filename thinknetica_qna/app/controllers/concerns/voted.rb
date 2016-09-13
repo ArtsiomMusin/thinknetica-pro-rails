@@ -14,15 +14,14 @@ module Voted
   end
 
   def reject_vote
-    unless current_user.author_of?(@votable)
-      @vote = @votable.votes.where(user: current_user).first
-      if @vote
-        respond_to do |format|
-          if @vote.destroy
-            format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }
-          else
-            format.json {
-              render json: @vote.errors.full_messages, status: :unprocessable_entity }
+    @vote = current_user.find_vote(@votable)
+    if @vote
+      respond_to do |format|
+        if @vote.destroy
+          format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }
+        else
+          format.json do
+            render json: @vote.errors.full_messages, status: :unprocessable_entity
           end
         end
       end
@@ -36,13 +35,14 @@ module Voted
 
   def vote(positive)
     unless current_user.author_of?(@votable)
-      @vote = @votable.votes.build(positive: positive, user: current_user)
+      @vote = @votable.build_vote(positive: positive, user: current_user)
       respond_to do |format|
         if @vote.save
           format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }
         else
-          format.json {
-            render json: @vote.errors.full_messages, status: :unprocessable_entity }
+          format.json do
+            render json: @vote.errors.full_messages, status: :unprocessable_entity
+          end
         end
       end
     end
