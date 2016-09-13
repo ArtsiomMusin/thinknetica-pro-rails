@@ -6,11 +6,11 @@ module Voted
   end
 
   def vote_yes
-    vote(true)
+    vote(1)
   end
 
   def vote_no
-    vote(false)
+    vote(-1)
   end
 
   def reject_vote
@@ -33,9 +33,9 @@ module Voted
      @votable = params[:controller].classify.constantize.find(params[:id])
    end
 
-  def vote(positive)
+  def vote(state)
     unless current_user.author_of?(@votable)
-      @vote = @votable.build_vote(positive: positive, user: current_user)
+      @vote = @votable.build_vote(state: state, user: current_user)
       respond_to do |format|
         if @vote.save
           format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }

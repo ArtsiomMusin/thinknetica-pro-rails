@@ -7,10 +7,10 @@ shared_examples_for 'voted' do
       before { sign_in(user) }
       it 'votes for the subject' do
         put :vote_yes, id: subject, format: :json
-        expect(subject.votes.first.positive).to be true
+        expect(subject.votes.first.state).to be 1
       end
       it 'rejects the vote' do
-        subject.votes.create(positive: true, user: user)
+        subject.votes.create(state: 1, user: user)
         expect { put :reject_vote, id: subject, format: :json }.to change(subject.votes, :count).by(-1)
       end
     end

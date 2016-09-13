@@ -5,8 +5,7 @@ module Votable
   end
 
   def vote_rating
-    diff = votes.where(positive: true).count - votes.where(positive: false).count
-    sprintf('%+d', diff)
+    sprintf('%+d', votes.sum(:state))
   end
 
   def build_vote(params)
