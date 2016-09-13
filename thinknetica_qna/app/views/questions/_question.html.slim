@@ -4,6 +4,7 @@ div class="panel panel-primary"
       h2= question.title
     .panel-body
       p=  question.body
+    = render 'votes/voting_question', object: question
     - if user_signed_in? && current_user.author_of?(question)
       p= link_to 'Remove', question, method: :delete, remote: true
       p= link_to 'Edit', '', class: 'edit-question-link'

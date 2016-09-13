@@ -1,0 +1,13 @@
+.vote-message-question
+.vote-rating-question
+  - unless object.vote_rating == 0
+    = format_rating(object.vote_rating)
+- if user_signed_in?
+  div class='voting-choice-question' style=(current_user.can_vote?(object) ? 'display: inline-block;' : 'display: none;' )
+    p= button_to 'Vote+', vote_yes_question_path, method: :put, remote: true, data: { type: :json }, class: 'btn btn-success', form_class: 'voting-question'
+
+  div class='voting-choice-question' style=(current_user.can_vote?(object) ? 'display: inline-block;' : 'display: none;' )
+    p= button_to 'Vote-', vote_no_question_path, method: :put, remote: true, data: { type: :json }, class: 'btn btn-warning', form_class: 'voting-question'
+
+  div class='voting-reject-question' style=('display: none;' unless current_user.can_reject_vote?(object))
+    p= button_to 'Reject Vote', reject_vote_question_path, method: :put, remote: true, data: { type: :json }, class: 'btn btn-danger', form_class: 'voting-reject-question'

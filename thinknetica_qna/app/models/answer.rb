@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 class Answer < ApplicationRecord
+  include HasUser
+  include Attachable
+  include Votable
+
   belongs_to :question
-  belongs_to :user
-  has_many :attachments, as: :attachable
-
-  validates :body, :question_id, :user_id, presence: true
-
-  accepts_nested_attributes_for :attachments,
-    reject_if: proc { |attributes| attributes['file'].blank? },
-    allow_destroy: true
+  validates :body, :question_id, presence: true
 
   def make_best
     Answer.transaction do
