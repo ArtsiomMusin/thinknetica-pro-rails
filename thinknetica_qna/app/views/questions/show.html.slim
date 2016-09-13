@@ -13,3 +13,5 @@ h3 Answers
    = f.text_area :body, class: 'form-control'
    = render 'attachments/attachments', f: f
  p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
+
+= subscribe_to "/questions/#{@question.id}/answers"
