@@ -57,4 +57,21 @@ feature 'Vote for answer', %q{
       end
     end
   end
+
+  # checking a bug when one event is on two objects
+  scenario 'Authenticated user votes for a question and answer at the same time', js: true do
+    sign_in(user)
+    visit question_path(answer.question)
+
+    within '.question' do
+      click_on 'Vote+'
+    end
+    sleep(5)
+    within '.answers' do
+      click_on 'Vote+'
+      within ".vote-rating-answer-#{answer.id}" do
+        expect(page).to have_content '+1'
+      end
+    end
+  end
 end

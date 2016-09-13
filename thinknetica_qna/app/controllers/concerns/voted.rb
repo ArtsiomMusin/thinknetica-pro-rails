@@ -1,5 +1,6 @@
 module Voted
   extend ActiveSupport::Concern
+  include VotableHelper
 
   included do
     before_action :load_votable, only: [:vote_yes, :vote_no, :reject_vote]
@@ -18,7 +19,7 @@ module Voted
     if @vote
       respond_to do |format|
         if @vote.destroy
-          format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }
+          format.json { render json: { rating: format_rating(@votable.vote_rating), id: @votable.id } }
         else
           format.json do
             render json: @vote.errors.full_messages, status: :unprocessable_entity
@@ -38,7 +39,7 @@ module Voted
       @vote = @votable.build_vote(state: state, user: current_user)
       respond_to do |format|
         if @vote.save
-          format.json { render json: { rating: @votable.vote_rating, id: @votable.id } }
+          format.json { render json: { rating: format_rating(@votable.vote_rating), id: @votable.id } }
         else
           format.json do
             render json: @vote.errors.full_messages, status: :unprocessable_entity

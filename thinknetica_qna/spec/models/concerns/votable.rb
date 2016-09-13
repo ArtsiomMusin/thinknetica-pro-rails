@@ -9,7 +9,7 @@ shared_examples_for 'votable' do
       subject.votes.create(state: 1, user: subject.user)
       subject.votes.create(state: 1, user: subject.user)
       subject.votes.create(state: -1, user: subject.user)
-      expect(subject.vote_rating).to eq('+2')
+      expect(subject.vote_rating).to eq(2)
     end
   end
   it { should have_many(:votes) }

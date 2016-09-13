@@ -1,7 +1,7 @@
 .vote-message-question
 .vote-rating-question
-  - unless object.vote_rating == '+0'
-    = object.vote_rating
+  - unless object.vote_rating == 0
+    = format_rating(object.vote_rating)
 - if user_signed_in?
   div class='voting-choice-question' style=(current_user.can_vote?(object) ? 'display: inline-block;' : 'display: none;' )
     p= button_to 'Vote+', vote_yes_question_path, method: :put, remote: true, data: { type: :json }, class: 'btn btn-success', form_class: 'voting-question'

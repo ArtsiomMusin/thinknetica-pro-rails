@@ -11,18 +11,18 @@ RSpec.describe User, type: :model do
   let(:question) { create(:question) }
   let(:user) { create(:user) }
   context '#author_of?' do
-    it 'has a question' do
+    it 'returns true if it is the author of a question' do
       expect(question.user).to be_author_of(question)
     end
-    it 'does not have a question' do
+    it 'returns false if it is not the author of a question' do
       expect(user).to_not be_author_of(question)
     end
   end
   context '#can_vote?' do
-    it 'can vote for a question' do
+    it 'returns true if can vote for a question' do
       expect(user).to be_can_vote(question)
     end
-    it 'cannot vote for a question' do
+    it 'returns false if cannot vote for a question' do
       question.votes.create(state: 1, user: question.user)
       expect(question.user).to_not be_can_vote(question)
     end

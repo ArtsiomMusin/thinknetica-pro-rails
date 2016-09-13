@@ -5,7 +5,7 @@ module Votable
   end
 
   def vote_rating
-    sprintf('%+d', votes.sum(:state))
+    votes.sum(:state)
   end
 
   def build_vote(params)
