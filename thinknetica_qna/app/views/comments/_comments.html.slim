@@ -1,0 +1,10 @@
+p Comments:
+  - commentable.comments.each do |c|
+    p= c.body
+p= link_to 'Add comment', '', class: 'comment-question-link'
+/= form_for [commentable, Comment.new], remote: true, html: { id: 'comment-question-form' } do |f|
+ /.form-group
+  / = f.label :body
+   /.comment-message
+   /= f.text_area :body, class: 'form-control'
+ /p= f.submit 'Save', class: 'btn btn-primary btn-sm'

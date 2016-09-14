@@ -6,6 +6,10 @@ ready = ->
     e.preventDefault();
     $(this).hide();
     $('form#edit-question-form').show()
+  $('.comment-question-link').click (e) ->
+    e.preventDefault();
+    $(this).hide();
+    $('form#comment-question-form').show()
 
 votes_rating_question = ->
   $('.voting-question').bind 'ajax:success', (e, data, status, xhr) ->
