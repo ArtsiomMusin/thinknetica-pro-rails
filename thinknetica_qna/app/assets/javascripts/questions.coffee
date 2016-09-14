@@ -40,3 +40,9 @@ $(document).on('page:load', ready)
 $(document).on('page:update', ready)
 $(document).on('turbolinks:load', votes_rating_question)
 $(document).on('turbolinks:load', votes_reject_question)
+
+# subscribes here
+PrivatePub.subscribe "/questions", (data, channel) ->
+  question = $.parseJSON(data['question']);
+  $('.questions').append('<p>Question:</p>');
+  $('.questions').append('<p><a href="/questions/' + question.id + '">' + question.title + '</a></p>');

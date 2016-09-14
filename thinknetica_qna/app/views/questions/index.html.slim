@@ -1,7 +1,9 @@
 p= link_to 'Ask question', new_question_path
 
 p All questions
-- if @questions
-  - @questions.each do |question|
-    p Question:
-    p= link_to question.title, question
+.questions
+  - if @questions
+    - @questions.each do |question|
+      p Question:
+      p= link_to question.title, question
+= subscribe_to "/questions"

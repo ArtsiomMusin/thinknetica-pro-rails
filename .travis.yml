@@ -3,7 +3,9 @@ dist: trusty
 language: ruby
 rvm:
   - 2.3.0
-before_install:  cd thinknetica_qna
+before_install:
+  - cd thinknetica_qna
+  - rackup private_pub.ru -s thin -E production &
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
