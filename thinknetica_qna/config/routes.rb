@@ -11,12 +11,13 @@ Rails.application.routes.draw do
     end
   end
   concern :commented do
-    resources :comments, shallow: true
+    member do
+      post 'create_comment'
+    end
   end
 
   resources :questions, concerns: [:voted, :commented] do
     resources :answers, concerns: [:voted, :commented], shallow: true do
-      resources :comments, shallow: true
       member do
         put 'mark_best'
       end

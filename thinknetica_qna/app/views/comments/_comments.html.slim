@@ -1,10 +1,13 @@
 p Comments:
-  - commentable.comments.each do |c|
-    p= c.body
-p= link_to 'Add comment', '', class: 'comment-question-link'
-/= form_for [commentable, Comment.new], remote: true, html: { id: 'comment-question-form' } do |f|
- /.form-group
-  / = f.label :body
-   /.comment-message
-   /= f.text_area :body, class: 'form-control'
- /p= f.submit 'Save', class: 'btn btn-primary btn-sm'
+.comments
+  - if commentable.comments
+    - commentable.comments.each do |c|
+      p= c.body
+- if user_signed_in?
+  p= link_to 'Add comment', '', class: 'comment-question-link'
+  = form_for [commentable, comment], url: {action: 'create_comment'}, remote: true, html: { style: 'display: none', id: 'comment-question-form' } do |f|
+   .form-group
+     = f.label :body, 'Comment text'
+     .comment-message
+     = f.text_area :body, class: 'form-control'
+   p= f.submit 'Save', class: 'btn btn-primary btn-sm'

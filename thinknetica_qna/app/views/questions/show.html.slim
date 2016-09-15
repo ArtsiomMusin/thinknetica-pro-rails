@@ -2,7 +2,7 @@
 .question-attachments
   = render 'attachments/list_attachments', attachable: @question
 .question-comments
-  = render 'comments/comments', commentable: @question
+  = render 'comments/comments', commentable: @question, comment: @comment
 
 h3 Answers
 .answers

@@ -38,12 +38,25 @@ votes_reject_question = ->
     $.each errors, (index, value) ->
       $('.vote-message-question').html(value)
 
+comment_question = ->
+  $('form#comment-question-form').bind 'ajax:success', (e, data, status, xhr) ->
+    comment = $.parseJSON(xhr.responseText);
+    $('.comments').append('<p>' + comment.body + '<p>')
+    $('.comment-question-link').show()
+    $('#comment_body').val('')
+    $('form#comment-question-form').hide()
+  .bind 'ajax:error', (e, xhr, status, error) ->
+    errors = $.parseJSON(xhr.responseText)
+    $.each errors, (index, value) ->
+      $('.comment-message').html(value)
+
 $(document).ready(ready)
 $(document).on("turbolinks:load", ready)
 $(document).on('page:load', ready)
 $(document).on('page:update', ready)
 $(document).on('turbolinks:load', votes_rating_question)
 $(document).on('turbolinks:load', votes_reject_question)
+$(document).on('turbolinks:load', comment_question)
 
 # subscribes here
 PrivatePub.subscribe "/questions", (data, channel) ->

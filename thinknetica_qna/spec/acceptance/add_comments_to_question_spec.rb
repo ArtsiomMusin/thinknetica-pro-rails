@@ -6,7 +6,7 @@ feature 'Comment on question', %q{
   I want to be able to leave comments for questions
 } do
   given(:question) { create(:question) }
-  scenario 'Authenticated user comments on a question' do
+  scenario 'Authenticated user comments on a question', js: true do
     sign_in(question.user)
     visit question_path(question)
     within '.question-comments' do
@@ -17,14 +17,14 @@ feature 'Comment on question', %q{
     end
   end
 
-  scenario 'Non-authenticated user cannot comment on a question' do
+  scenario 'Non-authenticated user cannot comment on a question', js: true do
     visit question_path(question)
     within '.question-comments' do
       expect(page).to_not have_content 'Add comment'
     end
   end
 
-  scenario 'Authenticated user adds an empty comment' do
+  scenario 'Authenticated user adds an empty comment', js: true do
     sign_in(question.user)
     visit question_path(question)
     within '.question-comments' do

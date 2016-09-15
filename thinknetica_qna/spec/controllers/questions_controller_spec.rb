@@ -1,5 +1,6 @@
 require 'rails_helper'
 require_relative 'concerns/voted'
+require_relative 'concerns/commented'
 
 RSpec.describe QuestionsController, type: :controller do
   let(:question) { create(:question) }
@@ -117,5 +118,6 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'CONCERN actions' do
     subject { create(:question) }
     it_behaves_like 'voted'
+    it_behaves_like 'commented'
   end
 end
