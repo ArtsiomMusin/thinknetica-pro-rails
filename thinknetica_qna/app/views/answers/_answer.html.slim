@@ -5,7 +5,7 @@ div class="answer-#{answer.id} #{answer.best ? 'glyphicon glyphicon-thumbs-up' :
     .answer-attachments
       = render 'attachments/list_attachments', attachable: answer
     .answer-comments
-      = render 'comments/comments', commentable: answer, comment: comment
+      = render 'comments/comments', commentable: answer, comment: answer.comments.new
     - if user_signed_in? && current_user.author_of?(answer)
       p= link_to 'Remove answer', answer, method: :delete, remote: true
       - unless answer.best?

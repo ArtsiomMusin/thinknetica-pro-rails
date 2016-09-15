@@ -41,7 +41,7 @@ votes_reject_question = ->
 comment_question = ->
   $('form#comment-question-form').bind 'ajax:success', (e, data, status, xhr) ->
     comment = $.parseJSON(xhr.responseText);
-    $('.comments').append('<p>' + comment.body + '<p>')
+    $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
     $('.comment-question-link').show()
     $('#comment_body').val('')
     $('form#comment-question-form').hide()

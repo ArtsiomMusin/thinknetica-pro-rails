@@ -6,7 +6,7 @@ feature 'Comment on answer', %q{
   I want to be able to leave comments for answers
 } do
   given(:answer) { create(:answer) }
-  scenario 'Authenticated user comments on an answer' do
+  scenario 'Authenticated user comments on an answer', js: true do
     sign_in(answer.user)
     visit question_path(answer.question)
     within '.answer-comments' do
@@ -17,14 +17,14 @@ feature 'Comment on answer', %q{
     end
   end
 
-  scenario 'Non-authenticated user cannot comment on an answer' do
+  scenario 'Non-authenticated user cannot comment on an answer', js: true do
     visit question_path(answer.question)
     within '.answer-comments' do
       expect(page).to_not have_content 'Add comment'
     end
   end
 
-  scenario 'Authenticated user adds an empty comment' do
+  scenario 'Authenticated user adds an empty comment', js: true do
     sign_in(answer.user)
     visit question_path(answer.question)
     within '.answer-comments' do
