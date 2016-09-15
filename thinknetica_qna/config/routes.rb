@@ -10,9 +10,13 @@ Rails.application.routes.draw do
       put 'reject_vote'
     end
   end
+  concern :commented do
+    resources :comments, shallow: true
+  end
 
-  resources :questions, concerns: [:voted] do
-    resources :answers, concerns: [:voted], shallow: true do
+  resources :questions, concerns: [:voted, :commented] do
+    resources :answers, concerns: [:voted, :commented], shallow: true do
+      resources :comments, shallow: true
       member do
         put 'mark_best'
       end
