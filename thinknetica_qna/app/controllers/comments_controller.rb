@@ -4,15 +4,13 @@ class CommentsController < ApplicationController
 
   def create
     @comment = @commentable.build_comment(comment_params)
-    if @comment
-      respond_to do |format|
-        if @comment.save
-          PrivatePub.publish_to "/comments/#{@commentable.class.to_s.downcase}", comment: @comment.to_json
-          format.json { render json: @comment }
-        else
-          format.json do
-            render json: @comment.errors.full_messages, status: :unprocessable_entity
-          end
+    respond_to do |format|
+      if @comment.save
+        PrivatePub.publish_to "/#{@commentable.class.to_s.downcase}s/#{@commentable.id}/comments", comment: @comment.to_json
+        format.json { render json: @comment }
+      else
+        format.json do
+          render json: @comment.errors.full_messages, status: :unprocessable_entity
         end
       end
     end
@@ -24,11 +22,8 @@ class CommentsController < ApplicationController
   end
 
    def load_commentable
-     if params[:question_id]
-       @commentable = Question.find(params[:question_id])
-     elsif params[:answer_id]
-       @commentable = Answer.find(params[:answer_id])
-     end
-     #@commentable = params[:controller].classify.constantize.find(params[:id])
+     request.path =~ /^\/(\w+)s/
+     model_name = Regexp.last_match(1)
+     @commentable = model_name.classify.constantize.find(params["#{model_name}_id".to_sym])
    end
 end
