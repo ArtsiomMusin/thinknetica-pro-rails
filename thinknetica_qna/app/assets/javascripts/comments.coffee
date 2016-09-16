@@ -6,15 +6,12 @@ ready = ->
   PrivatePub.subscribe $('form#comment-question-form').attr('action'), (data, channel) ->
     comment = $.parseJSON(data['comment']);
     $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
-    $('.comment-question-link').show()
     $('#comment_body').val('')
-    $('form#comment-question-form').hide()
-
-  PrivatePub.subscribe $('form#comment-answer-form').attr('action'), (data, channel) ->
-    comment = $.parseJSON(data['comment']);
-    $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
-    $('.comment-answer-link').show()
-    $('#comment_body').val('')
-    $('form#comment-answer-form').hide()
+    if comment.commentable_type == 'Question'
+      $('.comment-question-link').show()
+      $('form#comment-question-form').hide()
+    else
+      $('.comment-answer-link').show()
+      $('form#comment-answer-form').hide()
 
 $(document).ready(ready)

@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
     @comment = @commentable.build_comment(comment_params)
     respond_to do |format|
       if @comment.save
-        PrivatePub.publish_to "/#{@commentable.class.to_s.downcase}s/#{@commentable.id}/comments", comment: @comment.to_json
+        PrivatePub.publish_to @commentable.channel_name, comment: @comment.to_json
         format.json { render json: @comment }
       else
         format.json do

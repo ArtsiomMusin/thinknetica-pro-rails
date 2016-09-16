@@ -15,4 +15,8 @@ class Answer < ApplicationRecord
       update!(best: true)
     end
   end
+
+  def channel_name
+    question.channel_name
+  end
 end
