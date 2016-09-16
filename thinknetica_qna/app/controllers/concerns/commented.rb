@@ -10,6 +10,7 @@ module Commented
     if @comment
       respond_to do |format|
         if @comment.save
+          PrivatePub.publish_to "/comments/#{params[:controller].classify.downcase}", comment: @comment.to_json
           format.json { render json: @comment }
         else
           format.json do

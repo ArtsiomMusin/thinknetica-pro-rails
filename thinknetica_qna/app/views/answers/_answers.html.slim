@@ -1,3 +1,4 @@
 = render @question.answers.order(best: :desc)
   - if @question.answers.empty?
     p No answers yet
+= subscribe_to "/comments/answer"

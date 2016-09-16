@@ -41,13 +41,7 @@ votes_reject_answer = ->
       $('.vote-message-answer-' + votes_info.id).html(value)
 
 comment_answer = ->
-  $('form#comment-answer-form').bind 'ajax:success', (e, data, status, xhr) ->
-    comment = $.parseJSON(xhr.responseText);
-    $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
-    $('.comment-answer-link').show()
-    $('#comment_body').val('')
-    $('form#comment-answer-form').hide()
-  .bind 'ajax:error', (e, xhr, status, error) ->
+  $('form#comment-answer-form').bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
       $('.comment-message').html(value)
@@ -59,3 +53,10 @@ $(document).on('page:update', ready)
 $(document).on('turbolinks:load', votes_rating_answer)
 $(document).on('turbolinks:load', votes_reject_answer)
 $(document).on('turbolinks:load', comment_answer)
+
+PrivatePub.subscribe "/comments/answer", (data, channel) ->
+  comment = $.parseJSON(data['comment']);
+  $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
+  $('.comment-answer-link').show()
+  $('#comment_body').val('')
+  $('form#comment-answer-form').hide()

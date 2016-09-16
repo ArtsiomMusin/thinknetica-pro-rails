@@ -39,13 +39,7 @@ votes_reject_question = ->
       $('.vote-message-question').html(value)
 
 comment_question = ->
-  $('form#comment-question-form').bind 'ajax:success', (e, data, status, xhr) ->
-    comment = $.parseJSON(xhr.responseText);
-    $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
-    $('.comment-question-link').show()
-    $('#comment_body').val('')
-    $('form#comment-question-form').hide()
-  .bind 'ajax:error', (e, xhr, status, error) ->
+  $('form#comment-question-form').bind 'ajax:error', (e, xhr, status, error) ->
     errors = $.parseJSON(xhr.responseText)
     $.each errors, (index, value) ->
       $('.comment-message').html(value)
@@ -63,3 +57,10 @@ PrivatePub.subscribe "/questions", (data, channel) ->
   question = $.parseJSON(data['question']);
   $('.questions').append('<p>Question:</p>');
   $('.questions').append('<p><a href="/questions/' + question.id + '">' + question.title + '</a></p>');
+
+PrivatePub.subscribe "/comments/question", (data, channel) ->
+  comment = $.parseJSON(data['comment']);
+  $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
+  $('.comment-question-link').show()
+  $('#comment_body').val('')
+  $('form#comment-question-form').hide()
