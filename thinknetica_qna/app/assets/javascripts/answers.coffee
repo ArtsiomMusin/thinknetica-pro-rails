@@ -53,10 +53,3 @@ $(document).on('page:update', ready)
 $(document).on('turbolinks:load', votes_rating_answer)
 $(document).on('turbolinks:load', votes_reject_answer)
 $(document).on('turbolinks:load', comment_answer)
-
-PrivatePub.subscribe "/comments/answer", (data, channel) ->
-  comment = $.parseJSON(data['comment']);
-  $('.comments-' + comment.commentable_type.toLowerCase() + '-' + comment.commentable_id).append('<p>' + comment.body + '<p>')
-  $('.comment-answer-link').show()
-  $('#comment_body').val('')
-  $('form#comment-answer-form').hide()

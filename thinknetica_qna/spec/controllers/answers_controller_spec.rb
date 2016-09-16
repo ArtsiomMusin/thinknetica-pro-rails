@@ -1,6 +1,5 @@
 require 'rails_helper'
 require_relative 'concerns/voted'
-require_relative 'concerns/commented'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question_with_answer) { create(:question, answers: [answer]) }
@@ -116,6 +115,5 @@ RSpec.describe AnswersController, type: :controller do
   describe 'CONCERN actions' do
     subject { create(:answer) }
     it_behaves_like 'voted'
-    it_behaves_like 'commented'
   end
 end

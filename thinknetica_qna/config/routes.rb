@@ -11,9 +11,7 @@ Rails.application.routes.draw do
     end
   end
   concern :commented do
-    member do
-      post 'create_comment'
-    end
+    resources :comments, shallow: true
   end
 
   resources :questions, concerns: [:voted, :commented] do

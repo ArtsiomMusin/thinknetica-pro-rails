@@ -1,4 +1,5 @@
 = render @question
+= subscribe_to '/comments/question'
 .question-attachments
   = render 'attachments/list_attachments', attachable: @question
 .question-comments
@@ -7,6 +8,7 @@
 h3 Answers
 .answers
   = render 'answers/answers'
+= subscribe_to '/comments/answer'
 
 = form_for [@question, @answer], remote: true do |f|
  .form-group
