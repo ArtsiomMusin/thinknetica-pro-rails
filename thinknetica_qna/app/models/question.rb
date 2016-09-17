@@ -7,8 +7,4 @@ class Question < ApplicationRecord
 
   has_many :answers, dependent: :destroy
   validates :title, :body, presence: true
-
-  def channel_name
-    "/questions/#{id}/comments"
-  end
 end
