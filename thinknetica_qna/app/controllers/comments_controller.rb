@@ -30,6 +30,6 @@ class CommentsController < ApplicationController
    end
 
    def publish_to
-     PrivatePub.publish_to channel_name, comment: @comment.to_json
+     PrivatePub.publish_to channel_name, comment: @comment.to_json if @comment.valid?
    end
 end

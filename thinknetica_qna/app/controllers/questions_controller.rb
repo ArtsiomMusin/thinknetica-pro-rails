@@ -31,11 +31,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    if current_user.author_of?(@question)
-      respond_with(@question.destroy!) do |format|
-        format.html { redirect_to root_path }
-      end
-    end
+    respond_with(@question.destroy!, location: root_path) if current_user.author_of?(@question)
   end
 
   private
