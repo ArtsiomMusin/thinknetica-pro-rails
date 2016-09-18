@@ -3,11 +3,13 @@ dist: trusty
 language: ruby
 rvm:
   - 2.3.0
-before_install:  cd thinknetica_qna
+before_install:
+  - cd thinknetica_qna
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
+  - bundle exec rackup private_pub.ru -s thin -E production &
 
 addons:
   postgresql: "9.4"
@@ -15,4 +17,4 @@ addons:
 script:
   - export RAILS_ENV=test
   - bundle exec rake db:create db:schema:load db:test:prepare
-  - bundle exec rspec --color --require spec_helper
+  - bundle exec rspec --require spec_helper

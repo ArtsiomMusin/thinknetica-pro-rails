@@ -9,8 +9,10 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @comment = @question.comments.build
     @answer = Answer.new
     @answer.attachments.build
+    @answer.comments.build
   end
 
   def new
@@ -21,6 +23,7 @@ class QuestionsController < ApplicationController
   def create
     @question = current_user.questions.new(question_params)
     if @question.save
+      PrivatePub.publish_to "/questions", question: @question.to_json
       redirect_to @question, notice: 'Your question created successfully.'
     else
       flash[:notice] = 'Could not create a question.'

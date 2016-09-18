@@ -3,6 +3,7 @@ class Answer < ApplicationRecord
   include HasUser
   include Attachable
   include Votable
+  include Commentable
 
   belongs_to :question
   validates :body, :question_id, presence: true
