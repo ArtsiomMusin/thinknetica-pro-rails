@@ -13,7 +13,7 @@ h3 Answers
    = f.label :body
    .answer-message
    = f.text_area :body, class: 'form-control'
-   = render 'attachments/attachments', f: f
+   = render 'attachments/attachments', f: f, attachable: @answer
  p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
 
 = subscribe_to "/questions/#{@question.id}/comments"

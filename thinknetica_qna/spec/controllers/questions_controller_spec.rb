@@ -19,15 +19,6 @@ RSpec.describe QuestionsController, type: :controller do
     it 'shows one specific question' do
       expect(assigns(:question)).to eq question
     end
-    it 'creates a new attachment for an answer' do
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-    end
-    it 'creates a new comment for the question' do
-      expect(assigns(:question).comments.first).to be_a_new(Comment)
-    end
-    it 'creates a new comment for the answer' do
-      expect(assigns(:answer).comments.first).to be_a_new(Comment)
-    end
     it 'renders index' do
       expect(response).to render_template :show
     end
@@ -38,9 +29,6 @@ RSpec.describe QuestionsController, type: :controller do
     before { get :new }
     it 'creates a new question' do
       expect(assigns(:question)).to be_a_new(Question)
-    end
-    it 'creates a new attachment for the question' do
-      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
     end
     it 'renders new' do
       expect(response).to render_template :new
@@ -104,10 +92,10 @@ RSpec.describe QuestionsController, type: :controller do
     context 'check for one question' do
       before { sign_in(question.user) }
       it 'removes a question' do
-        expect { delete :destroy, id: question, format: :js }.to change(Question, :count).by(-1)
+        expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
       end
       it 'renders destroy template' do
-        delete :destroy, id: question, format: :js
+        delete :destroy, id: question
         expect(response).to redirect_to root_path
       end
     end
@@ -115,7 +103,7 @@ RSpec.describe QuestionsController, type: :controller do
       let!(:question) { create(:question) }
       it 'cannot remove a question from another user' do
         sign_in(user)
-        expect { delete :destroy, id: question, format: :js }.to_not change(Question, :count)
+        expect { delete :destroy, id: question }.to_not change(Question, :count)
       end
     end
   end
