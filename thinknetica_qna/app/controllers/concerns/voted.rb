@@ -4,6 +4,9 @@ module Voted
 
   included do
     before_action :load_votable, only: [:vote_yes, :vote_no, :reject_vote]
+    before_action :find_vote, only: :reject_vote
+
+    respond_to :json, only: [:vote_yes, :vote_no, :reject_vote]
   end
 
   def vote_yes
@@ -15,18 +18,9 @@ module Voted
   end
 
   def reject_vote
-    @vote = current_user.find_vote(@votable)
-    if @vote
-      respond_to do |format|
-        if @vote.destroy
-          format.json { render json: { rating: format_rating(@votable.vote_rating), id: @votable.id } }
-        else
-          format.json do
-            render json: @vote.errors.full_messages, status: :unprocessable_entity
-          end
-        end
-      end
-    end
+    respond_with(@vote.destroy) do |format|
+      format.json { render json: { rating: format_rating(@votable.vote_rating), id: @votable.id } }
+    end if @vote
   end
 
   private
@@ -34,19 +28,13 @@ module Voted
      @votable = params[:controller].classify.constantize.find(params[:id])
    end
 
-  def vote(state)
-    unless current_user.author_of?(@votable)
-      @vote = @votable.build_vote(state: state, user: current_user)
-      respond_to do |format|
-        if @vote.save
-          format.json { render json: { rating: format_rating(@votable.vote_rating), id: @votable.id } }
-        else
-          format.json do
-            render json: @vote.errors.full_messages, status: :unprocessable_entity
-          end
-        end
-      end
-    end
-  end
+   def find_vote
+     @vote = current_user.find_vote(@votable)
+   end
 
+  def vote(state)
+    respond_with(@vote = @votable.votes.create(state: state, user: current_user)) do |format|
+      format.json { render json: { rating: format_rating(@votable.vote_rating), id: @votable.id } }
+    end unless current_user.author_of?(@votable)
+  end
 end
