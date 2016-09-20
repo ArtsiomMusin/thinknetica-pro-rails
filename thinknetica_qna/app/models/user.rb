@@ -3,7 +3,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
-         :omniauthable, omniauth_providers: [:facebook]
+         :omniauthable, omniauth_providers: [:facebook, :twitter]
   has_many :questions
   has_many :answers
   has_many :votes
@@ -34,6 +34,9 @@ class User < ApplicationRecord
     return authorization.user if authorization
 
     email = auth.info[:email]
+    unless email
+      email = Devise.friendly_token[0, 20] + '@qna.com'
+    end
     user = User.where(email: email).first
     unless user
       password = Devise.friendly_token[0, 20]

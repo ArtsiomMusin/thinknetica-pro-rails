@@ -4,6 +4,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def facebook
   end
 
+  def twitter
+  end
+
   private
 
   def authenticate_provider
