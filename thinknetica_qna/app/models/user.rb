@@ -35,8 +35,10 @@ class User < ApplicationRecord
 
     email = auth.info[:email]
     unless email
-      email = Devise.friendly_token[0, 20] + '@qna.com'
+      data = Devise.friendly_token[0, 20]
+      return User.new(email: '', password: data, password_confirmation: data)
     end
+
     user = User.where(email: email).first
     unless user
       password = Devise.friendly_token[0, 20]

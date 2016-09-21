@@ -5,6 +5,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def twitter
+
   end
 
   private
@@ -15,6 +16,8 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     if @user.persisted?
       sign_in_and_redirect @user, event: :authentication
       set_flash_message(:notice, :success, kind: auth.provider.capitalize) if is_navigational_format?
+    elsif @user.email.blank?
+      render :ask_email
     end
   end
 end
