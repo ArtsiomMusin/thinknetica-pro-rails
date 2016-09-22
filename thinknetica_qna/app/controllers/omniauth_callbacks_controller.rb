@@ -5,7 +5,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def twitter
-
   end
 
   private
@@ -17,6 +16,10 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
       sign_in_and_redirect @user, event: :authentication
       set_flash_message(:notice, :success, kind: auth.provider.capitalize) if is_navigational_format?
     elsif @user.email.blank?
+      session['omniauth.data'] = {
+        provider: auth.provider, uid: auth.uid.to_i,
+        user_password: @user.password
+      }
       render :ask_email
     end
   end

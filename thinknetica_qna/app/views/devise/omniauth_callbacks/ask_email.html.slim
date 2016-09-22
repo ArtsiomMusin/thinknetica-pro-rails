@@ -1,5 +1,5 @@
 p Provide your email
-= form_for @user, url: ask_email_users_path do |f|
+= form_for @user, url: users_ask_email_path do |f|
   .form-group
     = f.label :email
     = f.text_field :email, class: 'form-control'

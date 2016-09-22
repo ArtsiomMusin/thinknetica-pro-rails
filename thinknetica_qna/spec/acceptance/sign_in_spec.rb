@@ -105,11 +105,10 @@ feature 'User sign in', %q{
       OmniAuth.config.add_mock(:twitter)
       click_on 'Sign in with Twitter'
 
-      open_email(user.email)
-      current_email.click_link 'Confirm my account'
-      expect(page).to have_content 'Your email address has been successfully confirmed.'
+      expect(page).to have_content 'Provide your email'
+      fill_in 'Email', with: user.email
+      click_on 'Continue'
 
-      click_on 'Sign in with Twitter'
       expect(page).to have_content 'Successfully authenticated from Twitter account.'
       expect(current_path).to eq root_path
     end
@@ -117,6 +116,15 @@ feature 'User sign in', %q{
     scenario 'Non-registered user tries to sign in' do
       visit new_user_session_path
       OmniAuth.config.add_mock(:twitter)
+      click_on 'Sign in with Twitter'
+
+      expect(page).to have_content 'Provide your email'
+      fill_in 'Email', with: 'some@mail.com'
+      click_on 'Continue'
+
+      open_email('some@mail.com')
+      current_email.click_link 'Confirm my account'
+      expect(page).to have_content 'Your email address has been successfully confirmed.'
       click_on 'Sign in with Twitter'
 
       expect(page).to have_content 'Successfully authenticated from Twitter account.'
@@ -128,6 +136,11 @@ feature 'User sign in', %q{
       OmniAuth.config.add_mock(:twitter)
       visit new_user_session_path
       click_on 'Sign in with Twitter'
+
+      expect(page).to have_content 'Provide your email'
+      fill_in 'Email', with: user.email
+      click_on 'Continue'
+
       click_on 'Log out'
 
       expect(page).to have_content 'Signed out successfully.'
