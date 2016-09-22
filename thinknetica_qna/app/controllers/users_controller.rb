@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  def ask_email
+  def build_by_email
     auth = session['omniauth.data']
 
     @user = User.build_from_omniauth_params(params, auth)

@@ -20,7 +20,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         provider: auth.provider, uid: auth.uid.to_i,
         user_password: @user.password
       }
-      render :ask_email
+      render :build_by_email
     end
   end
 end

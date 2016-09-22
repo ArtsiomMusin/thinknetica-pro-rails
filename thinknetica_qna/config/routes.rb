@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   devise_scope :user do
-    post 'users/ask_email'# => 'users#ask_email'
+    post 'users/build_by_email'
   end
 
   concern :voted do
