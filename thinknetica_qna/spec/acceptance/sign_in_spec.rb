@@ -33,15 +33,26 @@ feature 'User sign in', %q{
   end
 
   scenario 'User tries to sign up' do
+    clear_emails
     visit new_user_session_path
     click_on 'Sign up'
 
-    fill_in 'Email', with: 'new_user@test.com'
-    fill_in 'Password', with: '123456'
-    fill_in 'Password confirmation', with: '123456'
+    email = 'new_user@test.com'
+    password = '123456'
+    fill_in 'Email', with: email
+    fill_in 'Password', with: password
+    fill_in 'Password confirmation', with: password
     click_on 'Sign up'
 
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+    open_email(email)
+    current_email.click_link 'Confirm my account'
+    expect(page).to have_content 'Your email address has been successfully confirmed.'
+
+    fill_in 'Email', with: email
+    fill_in 'Password', with: password
+    click_on 'Log in'
+
+    expect(page).to have_content 'Signed in successfully.'
     expect(current_path).to eq root_path
   end
 end

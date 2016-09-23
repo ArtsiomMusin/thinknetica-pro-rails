@@ -40,7 +40,10 @@ gem 'remotipart', github: 'mshibuya/remotipart', ref: '88d9a7d'
 gem 'cocoon'
 gem 'private_pub'
 gem 'thin'
-gem 'responders', '~> 2.0' 
+gem 'responders', '~> 2.0'
+gem 'omniauth'
+gem 'omniauth-facebook'
+gem 'omniauth-twitter'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -64,11 +67,13 @@ group :development do
   gem 'rubocop'
   gem 'pry'
   gem 'fuubar'
+  gem 'letter_opener'
 end
 
 group :test do
   gem 'shoulda-matchers'
   gem 'rails-controller-testing'
+  gem 'capybara-email'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

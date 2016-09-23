@@ -1,4 +1,5 @@
 require 'factory_girl_rails'
+require 'capybara/email/rspec'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
@@ -79,5 +80,5 @@ RSpec.configure do |config|
   #   # test failures related to randomization by passing the same `--seed` value
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
-  
+
 end

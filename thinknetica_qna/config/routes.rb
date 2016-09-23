@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   root to: 'questions#index'
+
+  devise_scope :user do
+    post 'users/build_by_email'
+  end
 
   concern :voted do
     member do
