@@ -5,7 +5,9 @@ class QuestionsController < ApplicationController
   after_action :publish_question, only: :create
 
   include Voted
-  respond_to :js, only: [:update]
+  respond_to :js, only: :update
+
+  authorize_resource
 
   def index
     respond_with(@questions = Question.all)

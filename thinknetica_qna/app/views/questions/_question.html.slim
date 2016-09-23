@@ -5,8 +5,9 @@ div class="panel panel-primary"
     .panel-body
       p=  question.body
     = render 'votes/voting_question', object: question
-    - if user_signed_in? && current_user.author_of?(question)
+    - if can?(:destroy, question)
       p= link_to 'Remove', question, method: :delete, remote: true
+    - if can?(:update, question)
       p= link_to 'Edit', '', class: 'edit-question-link'
       = form_for question, remote: true, html: { id: 'edit-question-form' } do |f|
         .question-message
