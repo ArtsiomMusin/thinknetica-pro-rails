@@ -29,38 +29,46 @@ RSpec.describe Ability do
     it { should_not be_able_to :manage, :all }
     it { should be_able_to :read, :all }
 
-    it { should be_able_to :create, Question }
-    it { should be_able_to :create, Answer }
-    it { should be_able_to :create, Comment }
+    context 'create' do
+      it { should be_able_to :create, Question }
+      it { should be_able_to :create, Answer }
+      it { should be_able_to :create, Comment }
+    end
 
-    it { should be_able_to :update, create(:question, user: user), user: user }
-    it { should_not be_able_to :update, create(:question, user: other_user), user: user }
-    it { should be_able_to :update, create(:answer, user: user), user: user }
-    it { should_not be_able_to :update, create(:answer, user: other_user), user: user }
+    context 'update' do
+      it { should be_able_to :update, create(:question, user: user), user: user }
+      it { should_not be_able_to :update, create(:question, user: other_user), user: user }
+      it { should be_able_to :update, create(:answer, user: user), user: user }
+      it { should_not be_able_to :update, create(:answer, user: other_user), user: user }
+    end
 
-    # huh too much duplication here?
-    it { should_not be_able_to :vote_yes, create(:question, user: user), user: user }
-    it { should be_able_to :vote_yes, create(:question, user: other_user), user: user }
-    it { should_not be_able_to :vote_no, create(:question, user: user), user: user }
-    it { should be_able_to :vote_no, create(:question, user: other_user), user: user }
-    it { should_not be_able_to :reject_vote, create(:question, user: user), user: user }
-    it { should be_able_to :reject_vote, create(:question, user: other_user), user: user }
+    context 'votes' do
+      # huh too much duplication here?
+      it { should_not be_able_to :vote_yes, create(:question, user: user), user: user }
+      it { should be_able_to :vote_yes, create(:question, user: other_user), user: user }
+      it { should_not be_able_to :vote_no, create(:question, user: user), user: user }
+      it { should be_able_to :vote_no, create(:question, user: other_user), user: user }
+      it { should_not be_able_to :reject_vote, create(:question, user: user), user: user }
+      it { should be_able_to :reject_vote, create(:question, user: other_user), user: user }
 
-    it { should_not be_able_to :vote_yes, create(:answer, user: user), user: user }
-    it { should be_able_to :vote_yes, create(:answer, user: other_user), user: user }
-    it { should_not be_able_to :vote_no, create(:answer, user: user), user: user }
-    it { should be_able_to :vote_no, create(:answer, user: other_user), user: user }
-    it { should_not be_able_to :reject_vote, create(:answer, user: user), user: user }
-    it { should be_able_to :reject_vote, create(:answer, user: other_user), user: user }
+      it { should_not be_able_to :vote_yes, create(:answer, user: user), user: user }
+      it { should be_able_to :vote_yes, create(:answer, user: other_user), user: user }
+      it { should_not be_able_to :vote_no, create(:answer, user: user), user: user }
+      it { should be_able_to :vote_no, create(:answer, user: other_user), user: user }
+      it { should_not be_able_to :reject_vote, create(:answer, user: user), user: user }
+      it { should be_able_to :reject_vote, create(:answer, user: other_user), user: user }
+    end
 
-    it { should be_able_to :mark_best, create(:answer, user: user), user: user }
-    it { should_not be_able_to :mark_best, create(:answer, user: other_user), user: user }
+    context 'mark best' do
+      it { should be_able_to :mark_best, create(:answer, user: user), user: user }
+      it { should_not be_able_to :mark_best, create(:answer, user: other_user), user: user }
+    end
 
-    it { should be_able_to :destroy, Question, user: user }
-    it { should be_able_to :destroy, Answer, user: user }
-
-    #it { should be_able_to :destroy, Attachment, create(:attachment, attachable: another_question), user: another_question.user }
-    #it { should_not be_able_to :destroy, Attachment, create(:attachment, attachable: another_question), user: user }
+    context 'destroy' do
+      it { should be_able_to :destroy, Question, user: user }
+      it { should be_able_to :destroy, Answer, user: user }
+      it { should be_able_to :destroy, Attachment, user: user }
+    end
 
     it { should be_able_to :build_by_email, User }
   end

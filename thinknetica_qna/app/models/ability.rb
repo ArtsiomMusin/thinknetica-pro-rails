@@ -15,6 +15,7 @@ class Ability
 
   def guest_abilities
     can :read, :all
+    can :build_by_email, User
   end
 
   def admin_abilities
@@ -32,6 +33,5 @@ class Ability
       !user.author_of?(subject)
     end
     can :mark_best, Answer, user: user
-    can :build_by_email, User
   end
 end
