@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  #authorize_resource
+
   def build_by_email
     auth = session['omniauth.data']
 

@@ -32,8 +32,6 @@ RSpec.describe Ability do
     it { should be_able_to :create, Question }
     it { should be_able_to :create, Answer }
     it { should be_able_to :create, Comment }
-    it { should be_able_to :create, Attachment }
-    it { should be_able_to :create, Vote }
 
     it { should be_able_to :update, create(:question, user: user), user: user }
     it { should_not be_able_to :update, create(:question, user: other_user), user: user }
@@ -60,5 +58,10 @@ RSpec.describe Ability do
 
     it { should be_able_to :destroy, Question, user: user }
     it { should be_able_to :destroy, Answer, user: user }
+
+    #it { should be_able_to :destroy, Attachment, create(:attachment, attachable: another_question), user: another_question.user }
+    #it { should_not be_able_to :destroy, Attachment, create(:attachment, attachable: another_question), user: user }
+
+    it { should be_able_to :build_by_email, User }
   end
 end

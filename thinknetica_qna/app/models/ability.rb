@@ -23,11 +23,15 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can :create, [Question, Answer, Comment, Vote, Attachment]
+    can :create, [Question, Answer, Comment]
     can [:update, :destroy], [Question, Answer], user: user
+    can :destroy, Attachment do |attachment|
+      user.author_of?(attachment.attachable)
+    end
     can [:vote_yes, :vote_no, :reject_vote], [Question, Answer] do |subject|
-      subject.user != user
+      !user.author_of?(subject)
     end
     can :mark_best, Answer, user: user
+    can :build_by_email, User
   end
 end
