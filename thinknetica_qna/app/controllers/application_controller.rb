@@ -8,8 +8,15 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
+    respond_to do |format|
+      format.js do
+        flash.now[:error] = exception.message
+        render 'access_denied',  status: :forbidden
+      end
+      format.json { render json: { errors: [exception.message] }, status: :forbidden }
+      format.html { redirect_to root_url, alert: exception.message }
+    end
   end
 
-  #check_authorization unless: :devise_controller?
+  check_authorization unless: :devise_controller?
 end

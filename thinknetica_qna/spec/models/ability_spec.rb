@@ -36,10 +36,10 @@ RSpec.describe Ability do
     end
 
     context 'update' do
-      it { should be_able_to :update, create(:question, user: user), user: user }
-      it { should_not be_able_to :update, create(:question, user: other_user), user: user }
-      it { should be_able_to :update, create(:answer, user: user), user: user }
-      it { should_not be_able_to :update, create(:answer, user: other_user), user: user }
+      it { should be_able_to :update, create(:question, user: user) }
+      it { should_not be_able_to :update, create(:question, user: other_user) }
+      it { should be_able_to :update, create(:answer, user: user) }
+      it { should_not be_able_to :update, create(:answer, user: other_user) }
     end
 
     context 'votes' do
@@ -60,14 +60,14 @@ RSpec.describe Ability do
     end
 
     context 'mark best' do
-      it { should be_able_to :mark_best, create(:answer, user: user), user: user }
-      it { should_not be_able_to :mark_best, create(:answer, user: other_user), user: user }
+      it { should be_able_to :mark_best, create(:answer, question: question, user: question.user)}
+      it { should_not be_able_to :mark_best, create(:answer, user: other_user) }
     end
 
     context 'destroy' do
-      it { should be_able_to :destroy, Question, user: user }
-      it { should be_able_to :destroy, Answer, user: user }
-      it { should be_able_to :destroy, Attachment, user: user }
+      it { should be_able_to :destroy, Question }
+      it { should be_able_to :destroy, Answer }
+      it { should be_able_to :destroy, Attachment }
     end
 
     it { should be_able_to :build_by_email, User }
