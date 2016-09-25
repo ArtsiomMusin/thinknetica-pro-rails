@@ -24,3 +24,11 @@ $(document).ready(function() {
       data("association-insertion-method", 'after').
       data("association-insertion-node", 'this');
 });
+
+$(document).ajaxError(function( event, jqxhr, settings, exception ) {
+    if ( jqxhr.status== 403 ) {
+      jqxhr.responseJSON.errors.forEach(function(error) {
+        $('.alert').html(error);
+      });
+    }
+});

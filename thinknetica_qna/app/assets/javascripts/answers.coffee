@@ -43,12 +43,8 @@ votes_reject_answer = ->
 comment_answer = ->
   $('form#comment-answer-form').bind 'ajax:error', (e, xhr, status, error) ->
     errors = xhr.responseJSON.errors
-    prefix = ''
-    if errors.body?
-      errors = errors.body
-      prefix = 'Body '
-    $.each errors, (index, value) ->
-      $('.comment-message').html(prefix + value)
+    $.each errors.body, (index, value) ->
+      $('.comment-message').html('Body ' + value)
 
 $(document).ready(ready)
 $(document).on("turbolinks:load", ready)

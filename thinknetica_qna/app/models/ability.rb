@@ -26,7 +26,7 @@ class Ability
     guest_abilities
     can :create, [Question, Answer, Comment]
     can [:update, :destroy], [Question, Answer] do |subject|
-      subject.user_id == user.id
+      user.author_of?(subject)
     end
     can :destroy, Attachment do |attachment|
       user.author_of?(attachment.attachable)
@@ -35,7 +35,7 @@ class Ability
       !user.author_of?(subject)
     end
     can :mark_best, Answer do |subject|
-      subject.question.user_id == user.id
+      user.author_of?(subject.question)
     end
   end
 end
