@@ -56,4 +56,8 @@ class User < ApplicationRecord
     user.authorizations.create(provider: auth["provider"], uid: auth["uid"].to_s)
     user
   end
+
+  def self.all_but_current(user)
+    User.where.not(email: user.email).all.entries
+  end
 end
