@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :votes
   has_many :authorizations
 
+  scope :all_but_current, ->(user) { where.not(email: user.email) }
+
   def author_of?(entity)
     id == entity.user_id
   end
@@ -55,9 +57,5 @@ class User < ApplicationRecord
       password_confirmation: auth["user_password"]) unless user
     user.authorizations.create(provider: auth["provider"], uid: auth["uid"].to_s)
     user
-  end
-
-  def self.all_but_current(user)
-    User.where.not(email: user.email).all.entries
   end
 end
