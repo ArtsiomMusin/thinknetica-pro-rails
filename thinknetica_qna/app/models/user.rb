@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :votes
   has_many :authorizations
 
+  scope :all_but_current, ->(user) { where.not(email: user.email) }
+
   def author_of?(entity)
     id == entity.user_id
   end
