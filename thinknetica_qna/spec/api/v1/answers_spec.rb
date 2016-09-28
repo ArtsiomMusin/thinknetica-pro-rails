@@ -83,7 +83,7 @@ describe 'Answer API' do
         end
 
         it 'includes the url' do
-          expect(response.body).to include_json(attachment.file.url.to_json).at_path('attachments/0/url')
+          expect(response.body).to include_json((Rails.application.config.hostname_url + attachment.file.url).to_json).at_path('attachments/0/url')
         end
 
         %w(id created_at updated_at).each do |attr|
