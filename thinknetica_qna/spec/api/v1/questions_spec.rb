@@ -121,6 +121,11 @@ describe 'Question API' do
         expect(response).to be_success
       end
 
+      it 'has the right user assigned' do
+        new_question = Question.last
+        expect(new_question.user.id).to eq access_token.resource_owner_id
+      end
+
       %w(id title body created_at updated_at).each do |attr|
         it "contains the #{attr}" do
           new_question = Question.last
