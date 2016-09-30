@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
 
   # override it to let doorkeeper and cancan ot be used at the same time
   def current_user
-    return User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+    return @current_resource_owner ||= User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
     @current_user ||= warden.authenticate(scope: :user)
   end
 end
