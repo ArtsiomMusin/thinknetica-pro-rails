@@ -18,5 +18,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  #check_authorization unless: :devise_controller?
+  check_authorization unless: :devise_controller?
+
+  # override it to let doorkeeper and cancan ot be used at the same time
+  def current_user
+    return User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
+    @current_user ||= warden.authenticate(scope: :user)
+  end
 end

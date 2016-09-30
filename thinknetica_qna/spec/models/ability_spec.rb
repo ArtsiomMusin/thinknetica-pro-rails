@@ -71,5 +71,10 @@ RSpec.describe Ability do
     end
 
     it { should be_able_to :build_by_email, User }
+
+    context 'profiles' do
+      it { should be_able_to :get_all, :profile }
+      it { should be_able_to :get_me, :profile }
+    end
   end
 end

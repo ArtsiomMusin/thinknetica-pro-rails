@@ -1,5 +1,6 @@
 class Api::V1::AnswersController < Api::V1::BaseController
   before_action :load_question, except: :show
+  authorize_resource
 
   def index
     respond_with @question.answers
