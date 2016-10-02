@@ -37,5 +37,7 @@ class Ability
     can :mark_best, Answer do |subject|
       user.author_of?(subject.question)
     end
+    can :get_all, :profile
+    can :get_me, :profile
   end
 end
