@@ -60,6 +60,13 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to render_template :new
       end
     end
+
+    context 'PrivatePub' do
+      it 'publishes a new question' do
+        expect(PrivatePub).to receive(:publish_to).with('/questions', anything)
+        post :create, question: attributes_for(:question)
+      end
+    end
   end
 
   describe 'PATCH #update' do
