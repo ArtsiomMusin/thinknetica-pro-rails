@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-shared_examples_for 'commentable' do
+shared_examples_for 'commentable controller' do
   before { sign_in(object.user) }
   context 'check valid conditions' do
     it 'creates a new comment with parameters' do

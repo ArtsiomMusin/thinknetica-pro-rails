@@ -6,23 +6,15 @@ describe 'Profile API' do
     it_behaves_like 'API authenticable'
 
     context 'authorized' do
-      let(:me) { create(:user) }
-      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let(:object) { create(:user) }
+      let(:access_token) { create(:access_token, resource_owner_id: object.id) }
 
       before { get '/api/v1/profiles/me', params: { format: :json, access_token: access_token.token } }
-      it 'returns 200 status' do
-        expect(response).to be_success
-      end
+      it_behaves_like 'authorized profile API authenticable'
 
       %w(email id created_at updated_at admin).each do |attr|
         it "contains the #{attr}" do
-          expect(response.body).to be_json_eql(me.send(attr.to_sym).to_json).at_path(attr)
-        end
-      end
-
-      %w(password encrypted_password).each do |attr|
-        it "does not contain the #{attr}" do
-          expect(response.body).to_not have_json_path(attr)
+          expect(response.body).to be_json_eql(object.send(attr.to_sym).to_json).at_path(attr)
         end
       end
     end
@@ -33,17 +25,15 @@ describe 'Profile API' do
     it_behaves_like 'API authenticable'
 
     context 'authorized' do
-      let(:me) { create(:user) }
+      let(:object) { create(:user) }
       let!(:users) { create_list(:user, 2) }
-      let(:access_token) { create(:access_token, resource_owner_id: me.id) }
+      let(:access_token) { create(:access_token, resource_owner_id: object.id) }
 
       before { get '/api/v1/profiles', params: { format: :json, access_token: access_token.token } }
-      it 'returns 200 status' do
-        expect(response).to be_success
-      end
+      it_behaves_like 'authorized profile API authenticable'
 
       it 'does not contain the current user' do
-        expect(response.body).to_not include_json(me.to_json)
+        expect(response.body).to_not include_json(object.to_json)
       end
 
       it 'contains all other users' do
@@ -54,12 +44,6 @@ describe 'Profile API' do
         it "contains the #{attr}" do
           user = users.first
           expect(response.body).to be_json_eql(user.send(attr.to_sym).to_json).at_path("0/#{attr}")
-        end
-      end
-
-      %w(password encrypted_password).each do |attr|
-        it "does not contain the #{attr}" do
-          expect(response.body).to_not have_json_path(attr)
         end
       end
     end
