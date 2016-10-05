@@ -10,12 +10,19 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of(:body) }
   it { should validate_presence_of(:question_id) }
 
+  let(:question) { create(:question) }
   describe '#make_best?' do
-    let(:question) { create(:question) }
     before { create(:answer, question: question) }
     it 'sets the best answer' do
       question.answers.first.make_best
       expect(question.answers.first.best).to be true
+    end
+  end
+
+  describe '.norify_question_author' do
+    it 'sends an email to the question author' do
+      expect(AnswerMailer).to receive(:digest).with(question.user).and_call_original
+      create(:answer, question: question)
     end
   end
 
