@@ -19,7 +19,7 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe '.norify_question_author' do
+  describe '.notify_question_author' do
     it 'sends an email to the question author' do
       expect(AnswerMailer).to receive(:digest).with(question.user).and_call_original
       create(:answer, question: question)

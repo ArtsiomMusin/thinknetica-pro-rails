@@ -6,6 +6,7 @@ class Question < ApplicationRecord
   include Commentable
 
   has_many :answers, dependent: :destroy
+  has_many :subscribers, dependent: :destroy
   validates :title, :body, presence: true
 
   scope :daily_created, ->() { where('created_at >= ?', Time.now - 1.day) }
