@@ -5,6 +5,7 @@ div class="panel panel-primary"
     .panel-body
       p=  question.body
     = render 'votes/voting_question', object: question
+    p= button_to 'Subscribe', subscribe_path, method: :put, remote: true, class: 'btn btn-success'
     - if can?(:destroy, question)
       p= link_to 'Remove', question, method: :delete, remote: true
     - if can?(:update, question)

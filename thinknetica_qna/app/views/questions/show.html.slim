@@ -7,14 +7,14 @@
 h3 Answers
 .answers
   = render 'answers/answers'
-
-= form_for [@question, @answer], remote: true do |f|
- .form-group
-   = f.label :body
-   .answer-message
-   = f.text_area :body, class: 'form-control'
-   = render 'attachments/attachments', f: f, attachable: @answer
- p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
+- if can?(:create, @answer)
+  = form_for [@question, @answer], remote: true do |f|
+   .form-group
+     = f.label :body
+     .answer-message
+     = f.text_area :body, class: 'form-control'
+     = render 'attachments/attachments', f: f, attachable: @answer
+   p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
 
 = subscribe_to "/questions/#{@question.id}/comments"
 = subscribe_to "/questions/#{@question.id}/answers"
