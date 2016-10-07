@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-Rails.application.routes.draw do  
+Rails.application.routes.draw do
   use_doorkeeper
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
   root to: 'questions#index'
@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:voted, :commented] do
+    member do
+      post 'subscribe'
+    end
     resources :answers, concerns: [:voted, :commented], shallow: true do
       member do
         put 'mark_best'
