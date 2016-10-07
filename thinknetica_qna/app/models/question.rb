@@ -10,4 +10,8 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true
 
   scope :daily_created, ->() { where('created_at >= ?', Time.now - 1.day) }
+  
+  def extract_subscriber(user)
+    self.subscribers.where(user_id: user.id).first
+  end
 end

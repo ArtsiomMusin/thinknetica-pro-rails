@@ -31,6 +31,9 @@ class Ability
     can :destroy, Attachment do |attachment|
       user.author_of?(attachment.attachable)
     end
+    can :destroy, Subscriber do |subscriber|
+      user.subscribed?(subscriber.question)
+    end
     can [:vote_yes, :vote_no, :reject_vote], [Question, Answer] do |subject|
       !user.author_of?(subject)
     end

@@ -69,6 +69,7 @@ RSpec.describe Ability do
       it { should be_able_to :destroy, Question }
       it { should be_able_to :destroy, Answer }
       it { should be_able_to :destroy, Attachment }
+      it { should be_able_to :destroy, Subscriber }
     end
 
     it { should be_able_to :build_by_email, User }

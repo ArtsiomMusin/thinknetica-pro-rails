@@ -7,24 +7,25 @@ feature 'Subscribe to question', %q{
 } do
   given(:question) { create(:question) }
   given(:user) { create(:user) }
-  scenario 'Authenticated user subscribes to the question' do
+  scenario 'Authenticated user subscribes to the question', js: true do
     sign_in(user)
     visit question_path(question)
     click_on 'Subscribe'
 
     expect(page).to have_content 'You subscribed to this question!'
   end
-  scenario 'Non-authenticated user cannot subscribe to the question' do
+  scenario 'Non-authenticated user cannot subscribe to the question', js: true do
     visit question_path(question)
     expect(page).to_not have_link 'Subscribe'
   end
-  scenario 'Authenticated user unsubscribes from the question' do
+  scenario 'Authenticated user unsubscribes from the question', js: true do
     sign_in(user)
     visit question_path(question)
     click_on 'Subscribe'
-    click_on 'Unsubscribe'
+    expect(page).to_not have_link 'Subscribe'
 
-    expect(page).to have_content 'You removes your subscription from this question!'
+    click_on 'Unsubscribe'
+    expect(page).to have_content 'You removed your subscription from this question!'
   end
 
   scenario 'Author of the question unsubscribes from the question' do
@@ -32,10 +33,10 @@ feature 'Subscribe to question', %q{
     visit question_path(question)
     click_on 'Unsubscribe'
 
-    expect(page).to have_content 'You removes your subscription from this question!'
+    expect(page).to have_content 'You removed your subscription from this question!'
   end
 
-  scenario 'Authenticated user receives an email when a new answer is created' do
+  scenario 'Authenticated user receives an email when a new answer is created', js: true do
     sign_in(user)
     visit question_path(question)
     click_on 'Subscribe'

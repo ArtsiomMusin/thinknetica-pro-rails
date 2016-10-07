@@ -15,6 +15,14 @@ class User < ApplicationRecord
     id == entity.user_id
   end
 
+  def subscribed?(entity)
+    entity.subscribers.each do |subscriber|
+      next unless subscriber.persisted?
+      return true if subscriber.user_id == id
+    end
+    false
+  end
+
   def can_vote?(entity)
     !author_of?(entity) && !voted?(entity)
   end
