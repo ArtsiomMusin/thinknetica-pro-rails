@@ -24,7 +24,7 @@ class Ability
 
   def user_abilities
     guest_abilities
-    can :create, [Question, Answer, Comment]
+    can :create, [Question, Answer, Comment, Subscriber]
     can [:update, :destroy], [Question, Answer] do |subject|
       user.author_of?(subject)
     end

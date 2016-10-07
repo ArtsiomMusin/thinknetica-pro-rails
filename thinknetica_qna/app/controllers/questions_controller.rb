@@ -1,12 +1,11 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_question, only: [:show, :update, :destroy, :subscribe]
+  before_action :load_question, only: [:show, :update, :destroy]
   before_action :create_answer, only: :show
   after_action :publish_question, only: :create
 
   include Voted
   respond_to :js, only: :update
-  respond_to :json, only: :subscribe
 
   authorize_resource
 
@@ -33,11 +32,6 @@ class QuestionsController < ApplicationController
 
   def destroy
     respond_with(@question.destroy!, location: root_path)
-  end
-
-  def subscribe
-    binding.pry
-    respond_with(@question.subscribers.create(user_id: current_user.id))
   end
 
   private

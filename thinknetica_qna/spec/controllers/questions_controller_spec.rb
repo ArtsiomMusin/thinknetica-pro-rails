@@ -115,21 +115,6 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #subscribe' do
-    sign_in_user
-    it 'subscribes the current user to the question' do
-      binding.pry
-      expect { post :subscribe, id: question }.to change(assigns(:question).subscribers, :count).by(1)
-    end
-    before { post :subscribe, id: question }
-    it 'creates a new subscriber as the current user' do
-      expect(@user.id).to eq assigns(:question).subscribers.first.user_id
-    end
-    # it 'renders show after creating a new question' do
-    #   expect(response).to redirect_to assigns(:question)
-    # end
-  end
-
   describe 'CONCERN actions' do
     subject { create(:question) }
     it_behaves_like 'voted'
