@@ -8,6 +8,7 @@ require_relative 'concerns/commentable'
 RSpec.describe Question, type: :model do
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:subscriptions).dependent(:destroy) }
+  it { should have_many(:subscribers).through(:subscriptions).source(:user) }
   it { should validate_presence_of(:title) }
   it { should validate_presence_of(:body) }
 
@@ -24,11 +25,11 @@ RSpec.describe Question, type: :model do
     let(:subscription) { create(:subscription, user_id: user.id) }
     let(:question) { create(:question, subscriptions: [subscription]) }
 
-    it 'extracts the subscription by the user' do
+    it 'finds the subscription by the user' do
       expect(question.find_subscription(user).id).to be subscription.id
     end
 
-    it 'cannot extract the subscription from the user with no subscriptions' do
+    it 'cannot find the subscription from the user with no subscriptions' do
       expect(question.find_subscription(another_user)).to be_nil
     end
   end

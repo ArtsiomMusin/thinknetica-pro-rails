@@ -7,11 +7,12 @@ class Question < ApplicationRecord
 
   has_many :answers, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
+  has_many :subscribers, through: :subscriptions, source: :user
   validates :title, :body, presence: true
 
   after_create :subscribe_author
 
-  scope :daily_created, ->() { where('created_at >= ?', Time.now - 1.day) }
+  scope :daily_created, ->() { where(created_at: Date.yesterday.beginning_of_day..Date.yesterday.end_of_day) }
 
   def find_subscription(user)
     self.subscriptions.where(user_id: user.id).first

@@ -22,8 +22,8 @@ RSpec.describe Answer, type: :model do
   describe '#send_new_answer_notifications' do
     let(:users) { create_list(:user, 2) }
     before do
-      question.subscriptions = []
       users.each { |user| question.subscriptions << create(:subscription, user_id: user.id) }
+      users << question.user
     end
     it 'sends emails to all subscribers' do
       users.each { |user| expect(AnswerMailer).to receive(:digest).with(user).and_call_original }

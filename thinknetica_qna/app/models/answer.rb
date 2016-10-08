@@ -21,9 +21,8 @@ class Answer < ApplicationRecord
   private
 
   def send_new_answer_notifications
-    self.question.subscriptions.each do |subscription|
-      user = User.find(subscription.user_id)
-      AnswerMailer.digest(user).deliver_later
+    self.question.subscribers.each do |subscriber|
+      AnswerMailer.digest(subscriber).deliver_later
     end
   end
 end
