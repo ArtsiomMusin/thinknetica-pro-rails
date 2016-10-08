@@ -39,8 +39,10 @@ feature 'Edit question', %q{
       expect(page).to_not have_content question.body
       expect(page).to have_content 'edited title'
       expect(page).to have_content 'edited body'
-      expect(page).to_not have_selector 'input'
-      expect(page).to_not have_selector 'textarea'
+      within '.edit-question-link' do
+        expect(page).to_not have_selector 'input'
+        expect(page).to_not have_selector 'textarea'
+      end
     end
   end
 
