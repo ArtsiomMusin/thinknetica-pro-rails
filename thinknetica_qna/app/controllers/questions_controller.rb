@@ -2,7 +2,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   before_action :load_question, only: [:show, :update, :destroy]
   before_action :create_answer, only: :show
-  after_action :publish_question, :subscribe_author, only: :create
+  after_action :publish_question, only: :create
 
   include Voted
   respond_to :js, only: :update
@@ -49,9 +49,5 @@ class QuestionsController < ApplicationController
 
   def publish_question
     PrivatePub.publish_to "/questions", question: @question.to_json if @question.valid?
-  end
-
-  def subscribe_author
-    @question.subscribers.create(user_id: @question.user_id) if @question.valid?
   end
 end

@@ -8,7 +8,7 @@ class Answer < ApplicationRecord
   belongs_to :question
   validates :body, :question_id, presence: true
 
-  after_create :notify_question_author, :send_new_answer_notifications
+  after_create :send_new_answer_notifications
 
   def make_best
     Answer.transaction do
@@ -20,13 +20,9 @@ class Answer < ApplicationRecord
 
   private
 
-  def notify_question_author
-    AnswerMailer.digest(self.question.user).deliver_later
-  end
-
   def send_new_answer_notifications
-    self.question.subscribers.each do |subscriber|
-      user = User.find(subscriber.user_id)
+    self.question.subscriptions.each do |subscription|
+      user = User.find(subscription.user_id)
       AnswerMailer.digest(user).deliver_later
     end
   end

@@ -51,7 +51,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(response).to redirect_to assigns(:question)
       end
       it 'adds the subscription for the question author' do
-        expect(assigns(:question).subscribers.first.user_id).to eq assigns(:question).user_id
+        expect(assigns(:question).subscriptions.first.user_id).to eq assigns(:question).user_id
       end
     end
     context 'check invalid conditions' do

@@ -6,12 +6,18 @@ class Question < ApplicationRecord
   include Commentable
 
   has_many :answers, dependent: :destroy
-  has_many :subscribers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
   validates :title, :body, presence: true
 
+  after_create :subscribe_author
+
   scope :daily_created, ->() { where('created_at >= ?', Time.now - 1.day) }
-  
-  def extract_subscriber(user)
-    self.subscribers.where(user_id: user.id).first
+
+  def find_subscription(user)
+    self.subscriptions.where(user_id: user.id).first
+  end
+
+  def subscribe_author
+    self.subscriptions.create(user_id: user_id) if self.valid?
   end
 end

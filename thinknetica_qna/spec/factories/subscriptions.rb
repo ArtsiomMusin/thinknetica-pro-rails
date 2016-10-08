@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :subscriber do
+  factory :subscription do
     user_id { create(:user).id }
   end
 end

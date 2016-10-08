@@ -1,9 +1,0 @@
-<% if @subscriber.errors.present? %>
-  <% @subscriber.errors.full_messages.each do |message| %>
-    $('.alert').html('<%= j message %>')
-  <% end %>
-<% else %>
-  $('.notice').html('You removed your subscription from this question!')
-  $('.subscribe_question').show()
-  $('.unsubscribe_question').hide()
-<% end %>

@@ -16,11 +16,7 @@ class User < ApplicationRecord
   end
 
   def subscribed?(entity)
-    entity.subscribers.each do |subscriber|
-      next unless subscriber.persisted?
-      return true if subscriber.user_id == id
-    end
-    false
+    entity.subscriptions.where(user_id: id).present?
   end
 
   def can_vote?(entity)

@@ -19,9 +19,14 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe '.notify_question_author' do
-    it 'sends an email to the question author' do
-      expect(AnswerMailer).to receive(:digest).with(question.user).and_call_original
+  describe '#send_new_answer_notifications' do
+    let(:users) { create_list(:user, 2) }
+    before do
+      question.subscriptions = []
+      users.each { |user| question.subscriptions << create(:subscription, user_id: user.id) }
+    end
+    it 'sends emails to all subscribers' do
+      users.each { |user| expect(AnswerMailer).to receive(:digest).with(user).and_call_original }
       create(:answer, question: question)
     end
   end

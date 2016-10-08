@@ -31,9 +31,9 @@ feature 'Subscribe to question', %q{
   end
 
   context 'author condition' do
-    given(:subscriber) { create(:subscriber, question: question, user_id: question.user_id) }
+    given(:subscription) { create(:subscription, question: question, user_id: question.user_id) }
     scenario 'Author of the question unsubscribes from the question', js: true do
-      question.subscribers << subscriber
+      question.subscriptions << subscription
       sign_in(question.user)
       visit question_path(question)
       click_on 'Unsubscribe'

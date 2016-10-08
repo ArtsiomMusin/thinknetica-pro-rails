@@ -1,9 +1,0 @@
-<% if @subscriber.errors.present? %>
-  <% @subscriber.errors.full_messages.each do |message| %>
-    $('.alert').html('<%= j message %>')
-  <% end %>
-<% else %>
-  $('.notice').html('You subscribed to this question!')
-  $('.subscribe_question').hide()
-  $('.destroy_form').replaceWith("<%= j render 'subscribers/destroy_form', question: @subscriber.question %>")
-<% end %>

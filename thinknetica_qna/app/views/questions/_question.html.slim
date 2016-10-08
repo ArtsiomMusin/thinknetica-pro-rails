@@ -5,11 +5,11 @@ div class="panel panel-primary"
     .panel-body
       p=  question.body
     = render 'votes/voting_question', object: question
-    - if can?(:create, Subscriber.new)
+    - if can?(:create, Subscription.new)
       div class='subscribe_question' style=('display: none;' if current_user.subscribed?(question))
-        p= button_to 'Subscribe', [question, Subscriber.new], method: :post, remote: true, class: 'btn btn-success'
+        p= button_to 'Subscribe', [question, Subscription.new], method: :post, remote: true, class: 'btn btn-success'
       .destroy_form
-        = render 'subscribers/destroy_form', question: question
+        = render 'subscriptions/destroy_form', question: question
     - if can?(:destroy, question)
       p= link_to 'Remove', question, method: :delete, remote: true
     - if can?(:update, question)

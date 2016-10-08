@@ -1,4 +1,4 @@
-class Subscriber < ApplicationRecord
+class Subscription < ApplicationRecord
   belongs_to :question
   validates :user_id, presence: true
 end

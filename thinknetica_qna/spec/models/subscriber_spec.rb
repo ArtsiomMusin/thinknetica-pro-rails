@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Subscriber, type: :model do
+RSpec.describe Subscription, type: :model do
   it { should belong_to(:question) }
   it { should validate_presence_of(:user_id) }
 end
