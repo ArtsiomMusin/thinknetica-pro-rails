@@ -10,12 +10,24 @@ RSpec.describe Answer, type: :model do
   it { should validate_presence_of(:body) }
   it { should validate_presence_of(:question_id) }
 
+  let(:question) { create(:question) }
   describe '#make_best?' do
-    let(:question) { create(:question) }
     before { create(:answer, question: question) }
     it 'sets the best answer' do
       question.answers.first.make_best
       expect(question.answers.first.best).to be true
+    end
+  end
+
+  describe '#send_new_answer_notifications' do
+    let(:users) { create_list(:user, 2) }
+    before do
+      users.each { |user| question.subscriptions << create(:subscription, user_id: user.id) }
+      users << question.user
+    end
+    it 'sends emails to all subscribers' do
+      users.each { |user| expect(AnswerMailer).to receive(:digest).with(user).and_call_original }
+      create(:answer, question: question)
     end
   end
 

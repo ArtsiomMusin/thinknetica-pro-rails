@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160926160302) do
+ActiveRecord::Schema.define(version: 20161006202722) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20160926160302) do
     t.integer  "question_id"
     t.integer  "user_id"
     t.boolean  "best",        default: false
+    t.index ["question_id"], name: "index_answers_on_question_id", using: :btree
     t.index ["user_id"], name: "index_answers_on_user_id", using: :btree
   end
 
@@ -96,9 +97,16 @@ ActiveRecord::Schema.define(version: 20160926160302) do
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "answer_id"
     t.integer  "user_id"
     t.index ["user_id"], name: "index_questions_on_user_id", using: :btree
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "question_id"
+    t.index ["question_id"], name: "index_subscriptions_on_question_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -134,10 +142,12 @@ ActiveRecord::Schema.define(version: 20160926160302) do
     t.index ["votable_id", "votable_type"], name: "index_votes_on_votable_id_and_votable_type", using: :btree
   end
 
+  add_foreign_key "answers", "questions"
   add_foreign_key "answers", "users"
   add_foreign_key "authorizations", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "questions", "users"
+  add_foreign_key "subscriptions", "questions"
   add_foreign_key "votes", "users"
 end

@@ -20,6 +20,18 @@ RSpec.describe User, type: :model do
     end
   end
 
+  context '#subscribed?' do
+    let(:user_subscribed) { create(:user) }
+    let(:subscription) { create(:subscription, user_id: user_subscribed.id) }
+    let(:question_subscribed) { create(:question, subscriptions: [subscription]) }
+    it 'returns true if the user is currently subscription to the question' do
+      expect(user_subscribed).to be_subscribed(question_subscribed)
+    end
+    it 'returns false if the user is not currently subscription to the question' do
+      expect(user).to_not be_subscribed(question)
+    end
+  end
+
   describe 'votes methods' do
     context '#can_vote?' do
       it 'returns true if can vote for a question' do
@@ -144,6 +156,15 @@ RSpec.describe User, type: :model do
         'user_password' => '123456'
       }
       expect { User.build_from_omniauth_params(params, auth) }.to change(User, :count).by(1)
+    end
+  end
+
+  describe '.send_daily_digest' do
+    let(:users) { create_list(:user, 2) }
+    let(:questions) { create_list(:question, 2, user: users.first, created_at: Date.yesterday) }
+    it 'sends the daily digest with latest questions created' do
+      users.each { |user| expect(DailyMailer).to receive(:digest).with(user, questions).and_call_original }
+      User.send_daily_digest
     end
   end
 end

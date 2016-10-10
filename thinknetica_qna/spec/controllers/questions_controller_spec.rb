@@ -50,6 +50,9 @@ RSpec.describe QuestionsController, type: :controller do
       it 'renders show after creating a new question' do
         expect(response).to redirect_to assigns(:question)
       end
+      it 'adds the subscription for the question author' do
+        expect(assigns(:question).subscriptions.first.user_id).to eq assigns(:question).user_id
+      end
     end
     context 'check invalid conditions' do
       it 'fails with an incomplete question' do

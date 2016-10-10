@@ -15,6 +15,10 @@ class User < ApplicationRecord
     id == entity.user_id
   end
 
+  def subscribed?(entity)
+    entity.subscriptions.where(user_id: id).present?
+  end
+
   def can_vote?(entity)
     !author_of?(entity) && !voted?(entity)
   end
@@ -57,5 +61,15 @@ class User < ApplicationRecord
       password_confirmation: auth["user_password"]) unless user
     user.authorizations.create(provider: auth["provider"], uid: auth["uid"].to_s)
     user
+  end
+
+  def self.send_questions
+    self.send_daily_digest
+  end
+
+  def self.send_daily_digest
+    find_each.each do |user|
+      DailyMailer.digest(user, Question.daily_created.all.entries).deliver_later
+    end
   end
 end
