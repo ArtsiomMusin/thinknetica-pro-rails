@@ -5,11 +5,12 @@ class SearchesController < ApplicationController
 
   def show
     @results = []
-    text = ThinkingSphinx::Query.escape params[:text]
+    search = params[:search]
+    text = ThinkingSphinx::Query.escape search[:text]
     %w(questions answers comments users).each do |filter|
-      @results.push(filter.classify.constantize.search(text)) if params[filter.to_sym]
+      @results += filter.classify.constantize.search(text).to_a if search[filter.to_sym]
     end
-    @results = ThinkingSphinx.search(params[:text]) if @result.blank?
+    @results = ThinkingSphinx.search(text) if @result.blank?
     respond_with @results
   end
 end

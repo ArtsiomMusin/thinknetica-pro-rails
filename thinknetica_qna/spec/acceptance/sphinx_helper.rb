@@ -1,3 +1,5 @@
+require_relative 'acceptance_helper'
+
 module SphinxHelpers
   def index
     ThinkingSphinx::Test.index
