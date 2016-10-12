@@ -15,3 +15,4 @@ fi
 bundle exec rake ts:configure
 bundle exec rake ts:start
 bundle exec rake ts:index
+bundle exec rake ts:stop
