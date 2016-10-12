@@ -6,24 +6,8 @@ RSpec.describe SearchesController, type: :controller do
     let(:answer) { create(:answer, body: 'some body to find') }
     let(:comment) { create(:comment, body: 'some body to find') }
     let(:user) { create(:user, email: 'some@mail.ru') }
-    it 'finds all questions' do
-      expect(Question).to receive(:search).with('some body to find')
-      xhr :get, :show, search: { text: 'some body to find', questions: true }, format: :js
-    end
-    it 'finds all answers' do
-      expect(Answer).to receive(:search).with('some body to find')
-      xhr :get, :show, search: { text: 'some body to find', answers: true }, format: :js
-    end
-    it 'finds all comments' do
-      expect(Comment).to receive(:search).with('some body to find')
-      xhr :get, :show, search: { text: 'some body to find', comments: true }, format: :js
-    end
-    it 'finds all users' do
-      expect(User).to receive(:search).with('some\\@mail.ru')
-      xhr :get, :show, search: { text: 'some@mail.ru', users: true }, format: :js
-    end
     it 'finds everything' do
-      expect(ThinkingSphinx).to receive(:search).with('some')
+      expect(ThinkingSphinx).to receive(:search).with('some', { classes: [Question, Answer, Comment, User] })
       xhr :get, :show, search: { text: 'some' }, format: :js
     end
   end
