@@ -20,7 +20,7 @@ Rails.application.routes.draw do
   end
 
   resources :questions, concerns: [:voted, :commented] do
-    resources :subscriptions, shallow: true 
+    resources :subscriptions, shallow: true
     resources :answers, concerns: [:voted, :commented], shallow: true do
       member do
         put 'mark_best'
@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     end
   end
   resource :attachments
+  resource :searches
 
   namespace :api do
     namespace :v1 do

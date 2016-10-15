@@ -11,6 +11,7 @@ RSpec.describe Ability do
     it { should be_able_to :read, Comment }
     it { should be_able_to :read, Attachment }
     it { should be_able_to :read, Vote }
+    it { should be_able_to :read, Search }
 
     it { should_not be_able_to :manage, :all }
   end

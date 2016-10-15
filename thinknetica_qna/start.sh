@@ -7,3 +7,6 @@ bundle install
 puma &
 
 rackup private_pub.ru -s thin -E production &
+
+rake ts:start
+rake ts:index
