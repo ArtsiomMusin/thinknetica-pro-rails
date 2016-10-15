@@ -7,7 +7,7 @@ RSpec.describe SearchesController, type: :controller do
     let(:comment) { create(:comment, body: 'some body to find') }
     let(:user) { create(:user, email: 'some@mail.ru') }
     it 'finds everything' do
-      expect(ThinkingSphinx).to receive(:search).with('some', { classes: [Question, Answer, Comment, User] })
+      expect(Search).to receive(:seach_results).with(ActionController::Parameters.new(text: 'some'))
       xhr :get, :show, search: { text: 'some' }, format: :js
     end
   end
