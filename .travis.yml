@@ -8,6 +8,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # give xvfb some time to start
   - cp config/private_pub.yml.sample config/private_pub.yml
+  - cp config/database.yml.sample config/database.yml
   - bundle exec rackup private_pub.ru -s thin -E production &
   - sudo service sphinxsearch stop
 
