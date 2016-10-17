@@ -44,6 +44,7 @@ set :stage, :production
 # Global options
 # --------------
  set :ssh_options, {
+   #ssh-add /home/artem/.ssh/id_rsa if deployment fails on publickey permissions
    keys: %w(/home/artem/.ssh/id_rsa),
    forward_agent: true,
    auth_methods: %w(publickey password),
