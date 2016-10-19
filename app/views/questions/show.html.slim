@@ -1,20 +1,21 @@
-= render @question
-.question-attachments
-  = render 'attachments/list_attachments', attachable: @question
-.question-comments
-  = render 'comments/comments', commentable: @question, comment: @comment
+- cache @question do
+  = render @question
+  .question-attachments
+    = render 'attachments/list_attachments', attachable: @question
+  .question-comments
+    = render 'comments/comments', commentable: @question, comment: @comment
 
-h3 Answers
-.answers
-  = render 'answers/answers'
-- if can?(:create, @answer)
-  = form_for [@question, @answer], remote: true do |f|
-   .form-group
-     = f.label :body
-     .answer-message
-     = f.text_area :body, class: 'form-control'
-     = render 'attachments/attachments', f: f, attachable: @answer
-   p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
+  h3 Answers
+  .answers
+    = render 'answers/answers'
+  - if can?(:create, @answer)
+    = form_for [@question, @answer], remote: true do |f|
+     .form-group
+       = f.label :body
+       .answer-message
+       = f.text_area :body, class: 'form-control'
+       = render 'attachments/attachments', f: f, attachable: @answer
+     p= f.submit 'Add answer', class: 'btn btn-primary btn-sm'
 
 = subscribe_to "/questions/#{@question.id}/comments"
 = subscribe_to "/questions/#{@question.id}/answers"
