@@ -1,6 +1,6 @@
 div class="answer-#{answer.id} #{answer.best ? 'glyphicon glyphicon-thumbs-up' : ''}"
   - if answer.persisted?
-    - cache answer do
+    - cache ["loggedin_#{signed_in?}", answer] do
       = answer.body
       = render 'votes/voting_answer', object: answer
       .answer-attachments
